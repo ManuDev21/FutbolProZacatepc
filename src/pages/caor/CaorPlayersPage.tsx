@@ -83,15 +83,15 @@ export default function CaorPlayersPage() {
   };
 
   return (
-    <div>
+    <div className="space-y-6">
       <CaorSubnav />
 
       <PageHeader
-        title="Jugadores CAOR · Ficha Técnica Personalizable"
-        subtitle="Atributos 100% editables a medida del entrenador, perfil dominante, rol táctico y plan individual"
+        title="Ficha Técnica de Jugadores"
+        subtitle="Atributos personalizables por el entrenador, perfil dominante, rol táctico y plan individual"
         actions={
           <Button variant="secondary" size="sm" onClick={() => navigate('/app/jugadores')}>
-            <Users className="h-4 w-4" /> Gestionar altas/bajas en Plantilla
+            <Users className="h-4 w-4" /> Gestionar Plantilla
           </Button>
         }
       />
@@ -101,7 +101,7 @@ export default function CaorPlayersPage() {
           <EmptyState
             icon={<Users className="h-10 w-10" />}
             title="No hay jugadores registrados aún"
-            message="Registra primero tus jugadores en el módulo Jugadores para configurar su Ficha Técnica CAOR."
+            message="Registra primero tus jugadores en el módulo Jugadores para configurar su Ficha Técnica."
             action={
               <Button size="sm" onClick={() => navigate('/app/jugadores')}>
                 Ir a Jugadores
@@ -110,7 +110,7 @@ export default function CaorPlayersPage() {
           />
         </Card>
       ) : (
-        <div className="grid gap-4 lg:grid-cols-[320px_1fr]">
+        <div className="grid gap-6 lg:grid-cols-[300px_minmax(0,1fr)]">
           {/* Selector lateral de jugadores */}
           <Card className="h-fit">
             <div className="space-y-2 border-b border-zinc-100 p-3 dark:border-zinc-800">

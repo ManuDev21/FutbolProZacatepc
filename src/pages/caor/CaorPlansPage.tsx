@@ -159,14 +159,14 @@ export default function CaorPlansPage() {
   };
 
   return (
-    <div>
+    <div className="space-y-6">
       <CaorSubnav />
 
       <PageHeader
-        title="Planificaciones CAOR"
-        subtitle="Microciclos, mesociclos y macrociclos 100% editables con distribución semanal Lunes a Domingo"
+        title="Planificaciones"
+        subtitle="Microciclos semanales, mesociclos y macrociclos con objetivos, minutos y esfuerzo percibido"
         actions={
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2.5">
             <Select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
@@ -191,7 +191,7 @@ export default function CaorPlansPage() {
           <EmptyState
             icon={<CalendarRange className="h-10 w-10" />}
             title="Sin planificaciones registradas"
-            message="Crea tu primer microciclo semanal con objetivos tácticos, físicos, carga RPE y jugadas CAOR por día."
+            message="Crea tu primer microciclo semanal con objetivos tácticos, físicos, carga RPE y jugadas por día."
             action={
               <Button size="sm" onClick={openNew}>
                 <Plus className="h-4 w-4" /> Crear planificación semanal
@@ -200,7 +200,7 @@ export default function CaorPlansPage() {
           />
         </Card>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-6">
           {filtered.map((plan) => {
             const totalMin = plan.days.reduce((a, d) => a + (d.durationMin || 0), 0);
             const activeDays = plan.days.filter((d) => d.durationMin > 0);
@@ -215,7 +215,7 @@ export default function CaorPlansPage() {
                   title={plan.title}
                   subtitle={`${plan.weekLabel ? `${plan.weekLabel} · ` : ''}${formatDate(plan.startDate)} al ${formatDate(plan.endDate)}${plan.categoryId ? ` · ${catName.get(plan.categoryId) ?? ''}` : ''}${plan.coachId ? ` · DT: ${coachName.get(plan.coachId) ?? ''}` : ''}`}
                   action={
-                    <div className="flex flex-wrap items-center gap-1.5">
+                    <div className="flex flex-wrap items-center gap-2">
                       <Badge tone="blue">{plan.cycleType.toUpperCase()}</Badge>
                       <Badge
                         tone={
@@ -228,11 +228,11 @@ export default function CaorPlansPage() {
                       >
                         {plan.status}
                       </Badge>
-                      <span className="inline-flex items-center gap-1 rounded-md bg-zinc-100 px-2 py-0.5 text-xs font-semibold dark:bg-zinc-800">
-                        <Clock className="h-3.5 w-3.5 text-brand-600" /> {totalMin} min/sem
+                      <span className="inline-flex items-center gap-1.5 rounded-lg bg-zinc-100 px-2.5 py-1 text-xs font-semibold dark:bg-zinc-800">
+                        <Clock className="h-3.5 w-3.5 text-brand-600" /> {totalMin} min
                       </span>
-                      <span className="inline-flex items-center gap-1 rounded-md bg-amber-50 px-2 py-0.5 text-xs font-semibold text-amber-700 dark:bg-amber-950/40 dark:text-amber-300">
-                        <Flame className="h-3.5 w-3.5" /> RPE prom. {avgRpe}/10
+                      <span className="inline-flex items-center gap-1.5 rounded-lg bg-zinc-100 px-2.5 py-1 text-xs font-semibold dark:bg-zinc-800">
+                        <Flame className="h-3.5 w-3.5 text-brand-600" /> RPE {avgRpe}/10
                       </span>
                       <Button variant="ghost" size="icon" onClick={() => openEdit(plan)} title="Editar">
                         <Pencil className="h-4 w-4" />
@@ -254,43 +254,43 @@ export default function CaorPlansPage() {
                     </div>
                   }
                 />
-                <CardBody className="space-y-3">
-                  <div className="grid gap-2 rounded-xl bg-zinc-50 p-3 text-xs sm:grid-cols-3 dark:bg-zinc-800/50">
+                <CardBody className="space-y-5 p-5">
+                  <div className="grid gap-4 rounded-xl bg-zinc-50 p-4 text-xs sm:grid-cols-3 dark:bg-zinc-800/50">
                     <div>
-                      <span className="font-bold text-zinc-500 uppercase">Objetivo principal:</span>
-                      <p className="mt-0.5 font-medium text-zinc-800 dark:text-zinc-200">{plan.mainObjective}</p>
+                      <span className="font-bold text-zinc-500 uppercase">Objetivo principal</span>
+                      <p className="mt-1 text-sm font-medium text-zinc-800 dark:text-zinc-200">{plan.mainObjective}</p>
                     </div>
                     <div>
-                      <span className="font-bold text-zinc-500 uppercase">Foco táctico:</span>
-                      <p className="mt-0.5 font-medium text-zinc-800 dark:text-zinc-200">
+                      <span className="font-bold text-zinc-500 uppercase">Foco táctico</span>
+                      <p className="mt-1 text-sm font-medium text-zinc-800 dark:text-zinc-200">
                         {plan.tacticalFocus || '—'}
                       </p>
                     </div>
                     <div>
-                      <span className="font-bold text-zinc-500 uppercase">Foco físico / condicional:</span>
-                      <p className="mt-0.5 font-medium text-zinc-800 dark:text-zinc-200">
+                      <span className="font-bold text-zinc-500 uppercase">Foco físico</span>
+                      <p className="mt-1 text-sm font-medium text-zinc-800 dark:text-zinc-200">
                         {plan.physicalFocus || '—'}
                       </p>
                     </div>
                   </div>
 
-                  {/* Cuadrícula de 7 días */}
-                  <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-7">
+                  {/* Cuadrícula de 7 días con más aire */}
+                  <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7">
                     {plan.days.map((d) => (
                       <div
                         key={d.day}
-                        className="flex flex-col justify-between rounded-xl border border-zinc-200 p-2.5 text-xs dark:border-zinc-800"
+                        className="flex flex-col justify-between rounded-xl border border-zinc-200 p-3.5 text-xs dark:border-zinc-800"
                       >
                         <div>
-                          <div className="flex items-center justify-between">
-                            <span className="font-extrabold text-brand-700 dark:text-brand-400">{d.day}</span>
-                            <span className="rounded bg-zinc-100 px-1.5 py-0.5 text-[10px] font-bold dark:bg-zinc-800">
+                          <div className="flex items-center justify-between gap-1">
+                            <span className="font-bold text-brand-700 dark:text-brand-400">{d.day}</span>
+                            <span className="rounded bg-zinc-100 px-1.5 py-0.5 text-[10px] font-semibold text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
                               {d.durationMin}m · RPE {d.rpe}
                             </span>
                           </div>
-                          <p className="mt-1.5 font-semibold text-zinc-800 dark:text-zinc-100">{d.focus}</p>
+                          <p className="mt-2 leading-relaxed font-medium text-zinc-800 dark:text-zinc-100">{d.focus}</p>
                           {d.playIds.length > 0 && (
-                            <div className="mt-2 space-y-1">
+                            <div className="mt-3 space-y-1.5">
                               {d.playIds.map((pid) => {
                                 const pl = playById.get(pid);
                                 if (!pl) return null;
@@ -299,7 +299,7 @@ export default function CaorPlansPage() {
                                     key={pid}
                                     type="button"
                                     onClick={() => navigate(`/app/caor/estudio?id=${pid}`)}
-                                    className="flex w-full items-center gap-1 truncate rounded bg-brand-50 px-1.5 py-1 text-left text-[11px] font-semibold text-brand-700 hover:bg-brand-100 dark:bg-brand-950/50 dark:text-brand-300"
+                                    className="flex w-full items-center gap-1.5 truncate rounded-lg bg-brand-50 px-2 py-1 text-left text-[11px] font-semibold text-brand-700 hover:bg-brand-100 dark:bg-brand-950/50 dark:text-brand-300"
                                   >
                                     <Play className="h-3 w-3 shrink-0" />
                                     <span className="truncate">{pl.title}</span>

@@ -44,16 +44,15 @@ const ADMIN_COACH: Role[] = ['admin', 'coach'];
 export const CAOR_NAV_ITEMS: NavItem[] = [
   {
     to: '/app/caor',
-    label: 'Centro Digital CAOR',
+    label: 'Resumen CAOR',
     icon: Sparkles,
     roles: ADMIN_COACH,
     area: 'caor',
     group: 'caor',
-    badge: 'HUB',
   },
   {
     to: '/app/caor/estudio',
-    label: 'Tácticas & Ejercicios (Animados)',
+    label: 'Estudio Táctico',
     icon: Play,
     roles: ADMIN_COACH,
     area: 'caor',
@@ -77,7 +76,7 @@ export const CAOR_NAV_ITEMS: NavItem[] = [
   },
   {
     to: '/app/caor/test',
-    label: 'Test Físicos y Técnicos',
+    label: 'Tests Físicos',
     icon: Timer,
     roles: ADMIN_COACH,
     area: 'caor',
@@ -85,7 +84,7 @@ export const CAOR_NAV_ITEMS: NavItem[] = [
   },
   {
     to: '/app/caor/jugadores',
-    label: 'Jugadores CAOR',
+    label: 'Ficha Jugadores',
     icon: Users,
     roles: ADMIN_COACH,
     area: 'caor',
@@ -93,7 +92,7 @@ export const CAOR_NAV_ITEMS: NavItem[] = [
   },
   {
     to: '/app/caor/biblioteca',
-    label: 'Mi Biblioteca Propia',
+    label: 'Mi Biblioteca',
     icon: BookMarked,
     roles: ADMIN_COACH,
     area: 'caor',

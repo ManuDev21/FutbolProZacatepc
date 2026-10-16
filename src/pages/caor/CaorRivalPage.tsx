@@ -25,27 +25,27 @@ import type { CaorRivalKeyPlayer, CaorRivalReport, CaorRivalSlot, SportFormat } 
 function makeDefaultRivalSlots(format: SportFormat): CaorRivalSlot[] {
   if (format === 7) {
     return [
-      { id: uuid(), number: 1, label: 'POR', x: 0.5, y: 0.1 },
-      { id: uuid(), number: 4, label: 'DFI', x: 0.28, y: 0.28 },
-      { id: uuid(), number: 5, label: 'DFD', x: 0.72, y: 0.28 },
+      { id: uuid(), number: 1, label: 'POR', x: 0.5, y: 0.12 },
+      { id: uuid(), number: 4, label: 'DFI', x: 0.28, y: 0.3 },
+      { id: uuid(), number: 5, label: 'DFD', x: 0.72, y: 0.3 },
       { id: uuid(), number: 6, label: 'MC', x: 0.5, y: 0.5 },
-      { id: uuid(), number: 7, label: 'ED', x: 0.2, y: 0.65 },
-      { id: uuid(), number: 11, label: 'EI', x: 0.8, y: 0.65 },
+      { id: uuid(), number: 7, label: 'ED', x: 0.22, y: 0.65 },
+      { id: uuid(), number: 11, label: 'EI', x: 0.78, y: 0.65 },
       { id: uuid(), number: 9, label: 'DC', x: 0.5, y: 0.82 },
     ];
   }
   return [
-    { id: uuid(), number: 1, label: 'POR', x: 0.5, y: 0.08 },
-    { id: uuid(), number: 2, label: 'LD', x: 0.18, y: 0.25 },
-    { id: uuid(), number: 4, label: 'DFC', x: 0.38, y: 0.23 },
-    { id: uuid(), number: 5, label: 'DFC', x: 0.62, y: 0.23 },
-    { id: uuid(), number: 3, label: 'LI', x: 0.82, y: 0.25 },
-    { id: uuid(), number: 6, label: 'MCD', x: 0.5, y: 0.43 },
-    { id: uuid(), number: 8, label: 'MC', x: 0.32, y: 0.55 },
-    { id: uuid(), number: 10, label: 'MCO', x: 0.68, y: 0.55 },
-    { id: uuid(), number: 7, label: 'ED', x: 0.2, y: 0.76 },
-    { id: uuid(), number: 9, label: 'DC', x: 0.5, y: 0.84 },
-    { id: uuid(), number: 11, label: 'EI', x: 0.8, y: 0.76 },
+    { id: uuid(), number: 1, label: 'POR', x: 0.5, y: 0.11 },
+    { id: uuid(), number: 2, label: 'LD', x: 0.2, y: 0.27 },
+    { id: uuid(), number: 4, label: 'DFC', x: 0.4, y: 0.25 },
+    { id: uuid(), number: 5, label: 'DFC', x: 0.6, y: 0.25 },
+    { id: uuid(), number: 3, label: 'LI', x: 0.8, y: 0.27 },
+    { id: uuid(), number: 6, label: 'MCD', x: 0.5, y: 0.44 },
+    { id: uuid(), number: 8, label: 'MC', x: 0.32, y: 0.56 },
+    { id: uuid(), number: 10, label: 'MCO', x: 0.68, y: 0.56 },
+    { id: uuid(), number: 7, label: 'ED', x: 0.22, y: 0.75 },
+    { id: uuid(), number: 9, label: 'DC', x: 0.5, y: 0.82 },
+    { id: uuid(), number: 11, label: 'EI', x: 0.78, y: 0.75 },
   ];
 }
 
@@ -236,12 +236,12 @@ export default function CaorRivalPage() {
   const active = selectedRival ?? rivals?.[0] ?? null;
 
   return (
-    <div>
+    <div className="space-y-6">
       <CaorSubnav />
 
       <PageHeader
-        title="Análisis del Rival (Scouting CAOR)"
-        subtitle="Estudia sistemas, fortalezas, vulnerabilidades, balón parado y jugadores amenaza del rival"
+        title="Análisis del Rival"
+        subtitle="Estudia sistemas tácticos, fortalezas, debilidades, balón parado y jugadores clave del rival"
         actions={
           <Button onClick={openNew}>
             <Plus className="h-4 w-4" /> Nuevo análisis de rival
@@ -263,16 +263,16 @@ export default function CaorRivalPage() {
           />
         </Card>
       ) : (
-        <div className="grid gap-4 lg:grid-cols-[300px_1fr]">
+        <div className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
           {/* Lista lateral de rivales */}
           <Card className="h-fit">
             <CardHeader title="Rivales analizados" subtitle={`${rivals.length} informe(s)`} />
-            <CardBody className="space-y-2">
+            <CardBody className="space-y-2.5 p-4">
               {rivals.map((r) => (
                 <div
                   key={r.id}
                   onClick={() => setSelectedRival(r)}
-                  className={`cursor-pointer rounded-xl border p-3 transition ${
+                  className={`cursor-pointer rounded-xl border p-3.5 transition ${
                     active?.id === r.id
                       ? 'border-brand-600 bg-brand-50/60 dark:bg-brand-950/30'
                       : 'border-zinc-200 hover:border-brand-400 dark:border-zinc-800'
@@ -283,7 +283,7 @@ export default function CaorRivalPage() {
                     <Badge tone="red">F{r.format}</Badge>
                   </div>
                   <p className="mt-1 text-xs text-zinc-500">
-                    {r.formationOffense} · {r.matchDate ? formatDate(r.matchDate) : ''}
+                    {r.formationOffense} {r.matchDate ? `· ${formatDate(r.matchDate)}` : ''}
                   </p>
                 </div>
               ))}
@@ -292,13 +292,13 @@ export default function CaorRivalPage() {
 
           {/* Vista detallada del rival activo */}
           {active && (
-            <div className="space-y-4">
+            <div className="min-w-0 space-y-5">
               <Card>
                 <CardHeader
                   title={`Scouting: ${active.rivalName}`}
                   subtitle={`${active.competition ?? 'Partido'} ${active.matchDate ? `· ${formatDate(active.matchDate)}` : ''} · Ofensivo ${active.formationOffense} / Defensivo ${active.formationDefense}`}
                   action={
-                    <div className="flex gap-1.5">
+                    <div className="flex gap-2">
                       <Button variant="secondary" size="sm" onClick={() => openEdit(active)}>
                         <Pencil className="h-4 w-4" /> Editar informe
                       </Button>
@@ -319,14 +319,14 @@ export default function CaorRivalPage() {
                     </div>
                   }
                 />
-                <CardBody className="grid gap-4 lg:grid-cols-[320px_1fr]">
+                <CardBody className="grid gap-6 p-5 lg:grid-cols-[300px_minmax(0,1fr)]">
                   {/* Pizarra del parado rival */}
-                  <div>
-                    <p className="mb-2 text-xs font-bold text-zinc-500 uppercase">
+                  <div className="min-w-0">
+                    <p className="mb-2.5 text-xs font-bold text-zinc-500 uppercase">
                       Estructura detectada ({active.formationOffense})
                     </p>
                     <div
-                      className="relative mx-auto aspect-3/4 w-full max-w-xs overflow-hidden rounded-xl border border-zinc-200 shadow-inner"
+                      className="relative mx-auto aspect-3/4 max-h-[420px] w-full max-w-[280px] overflow-hidden rounded-xl border border-zinc-200 shadow-inner"
                       style={{
                         background: 'repeating-linear-gradient(0deg, #177541 0 10%, #126534 10% 20%)',
                       }}
@@ -343,13 +343,16 @@ export default function CaorRivalPage() {
                       {active.lineupSlots.map((s) => (
                         <div
                           key={s.id}
-                          style={{ left: `${s.x * 100}%`, top: `${s.y * 100}%` }}
+                          style={{
+                            left: `${clamp(s.x, 0.08, 0.92) * 100}%`,
+                            top: `${clamp(s.y, 0.08, 0.92) * 100}%`,
+                          }}
                           className="absolute -translate-x-1/2 -translate-y-1/2 flex flex-col items-center"
                         >
-                          <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-red-600 text-xs font-black text-white shadow">
+                          <div className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-white bg-red-600 text-[11px] font-bold text-white shadow">
                             {s.number}
                           </div>
-                          <span className="mt-0.5 rounded bg-black/65 px-1 text-[9px] font-bold text-white">
+                          <span className="mt-0.5 rounded bg-black/65 px-1 text-[9px] font-semibold text-white">
                             {s.label}
                           </span>
                         </div>
@@ -357,29 +360,29 @@ export default function CaorRivalPage() {
                     </div>
                   </div>
 
-                  {/* Detalles tácticos */}
-                  <div className="space-y-3">
-                    <div className="rounded-xl bg-zinc-50 p-3 dark:bg-zinc-800/50">
+                  {/* Detalles tácticos con buen espaciado */}
+                  <div className="min-w-0 space-y-4">
+                    <div className="rounded-xl bg-zinc-50 p-4 dark:bg-zinc-800/50">
                       <p className="text-xs font-bold text-zinc-500 uppercase">Estilo de juego general</p>
-                      <p className="mt-1 text-sm font-medium">{active.playingStyle}</p>
+                      <p className="mt-1.5 text-sm leading-relaxed font-medium">{active.playingStyle}</p>
                     </div>
 
-                    <div className="grid gap-3 sm:grid-cols-2">
-                      <div className="rounded-xl border border-emerald-200 bg-emerald-50/50 p-3 dark:border-emerald-900/50 dark:bg-emerald-950/20">
-                        <p className="text-xs font-extrabold text-emerald-700 uppercase dark:text-emerald-400">
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <div className="rounded-xl border border-emerald-200 bg-emerald-50/50 p-4 dark:border-emerald-900/50 dark:bg-emerald-950/20">
+                        <p className="text-xs font-bold text-emerald-700 uppercase dark:text-emerald-400">
                           Fortalezas del rival
                         </p>
-                        <ul className="mt-1.5 list-disc space-y-1 pl-4 text-xs">
+                        <ul className="mt-2 list-disc space-y-1.5 pl-4 text-xs leading-relaxed">
                           {active.strengths.map((s, i) => (
                             <li key={i}>{s}</li>
                           ))}
                         </ul>
                       </div>
-                      <div className="rounded-xl border border-amber-200 bg-amber-50/50 p-3 dark:border-amber-900/50 dark:bg-amber-950/20">
-                        <p className="text-xs font-extrabold text-amber-700 uppercase dark:text-amber-400">
+                      <div className="rounded-xl border border-amber-200 bg-amber-50/50 p-4 dark:border-amber-900/50 dark:bg-amber-950/20">
+                        <p className="text-xs font-bold text-amber-700 uppercase dark:text-amber-400">
                           Debilidades a explotar
                         </p>
-                        <ul className="mt-1.5 list-disc space-y-1 pl-4 text-xs">
+                        <ul className="mt-2 list-disc space-y-1.5 pl-4 text-xs leading-relaxed">
                           {active.weaknesses.map((w, i) => (
                             <li key={i}>{w}</li>
                           ))}
@@ -387,53 +390,53 @@ export default function CaorRivalPage() {
                       </div>
                     </div>
 
-                    <div className="grid gap-3 sm:grid-cols-2">
-                      <div className="rounded-xl border border-zinc-200 p-3 text-xs dark:border-zinc-800">
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <div className="rounded-xl border border-zinc-200 p-4 text-xs leading-relaxed dark:border-zinc-800">
                         <p className="font-bold text-zinc-500 uppercase">Patrones de ataque</p>
-                        <p className="mt-1">{active.attackingPatterns || '—'}</p>
+                        <p className="mt-1.5">{active.attackingPatterns || '—'}</p>
                       </div>
-                      <div className="rounded-xl border border-zinc-200 p-3 text-xs dark:border-zinc-800">
+                      <div className="rounded-xl border border-zinc-200 p-4 text-xs leading-relaxed dark:border-zinc-800">
                         <p className="font-bold text-zinc-500 uppercase">Transición defensiva</p>
-                        <p className="mt-1">{active.defensiveTransition || '—'}</p>
+                        <p className="mt-1.5">{active.defensiveTransition || '—'}</p>
                       </div>
-                      <div className="rounded-xl border border-zinc-200 p-3 text-xs dark:border-zinc-800">
-                        <p className="font-bold text-zinc-500 uppercase">Balón parado (ABP)</p>
-                        <p className="mt-1">{active.setPiecesInfo || '—'}</p>
+                      <div className="rounded-xl border border-zinc-200 p-4 text-xs leading-relaxed dark:border-zinc-800">
+                        <p className="font-bold text-zinc-500 uppercase">Balón parado</p>
+                        <p className="mt-1.5">{active.setPiecesInfo || '—'}</p>
                       </div>
-                      <div className="rounded-xl border border-brand-300 bg-brand-50/50 p-3 text-xs dark:border-brand-900 dark:bg-brand-950/30">
-                        <p className="font-extrabold text-brand-700 uppercase dark:text-brand-300">
-                          Nuestro Plan de Partido Cañeros
+                      <div className="rounded-xl border border-brand-300 bg-brand-50/50 p-4 text-xs leading-relaxed dark:border-brand-900 dark:bg-brand-950/30">
+                        <p className="font-bold text-brand-700 uppercase dark:text-brand-300">
+                          Plan de Partido Cañeros
                         </p>
-                        <p className="mt-1 font-medium">{active.gamePlan || '—'}</p>
+                        <p className="mt-1.5 font-medium">{active.gamePlan || '—'}</p>
                       </div>
                     </div>
 
                     {/* Jugadores clave */}
                     <div>
-                      <p className="mb-2 flex items-center gap-1.5 text-xs font-bold text-zinc-500 uppercase">
+                      <p className="mb-2.5 flex items-center gap-1.5 text-xs font-bold text-zinc-500 uppercase">
                         <ShieldAlert className="h-4 w-4 text-red-500" /> Jugadores clave a vigilar
                       </p>
-                      <div className="grid gap-2 sm:grid-cols-2">
+                      <div className="grid gap-3 sm:grid-cols-2">
                         {active.keyPlayers.map((kp) => (
                           <div
                             key={kp.id}
-                            className="flex items-start gap-2.5 rounded-xl border border-zinc-200 p-2.5 text-xs dark:border-zinc-800"
+                            className="flex items-start gap-3 rounded-xl border border-zinc-200 p-3.5 text-xs dark:border-zinc-800"
                           >
-                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-600 font-black text-white">
+                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-600 font-bold text-white">
                               #{kp.jerseyNumber}
                             </div>
                             <div className="min-w-0 flex-1">
-                              <div className="flex items-center justify-between">
-                                <span className="font-bold">
+                              <div className="flex items-center justify-between gap-2">
+                                <span className="truncate font-bold">
                                   {kp.name} ({kp.position})
                                 </span>
-                                <span className="flex text-gold-500">
+                                <span className="flex shrink-0 text-amber-500">
                                   {Array.from({ length: kp.threatLevel }).map((_, i) => (
-                                    <Star key={i} className="h-3 w-3 fill-gold-500" />
+                                    <Star key={i} className="h-3.5 w-3.5 fill-current" />
                                   ))}
                                 </span>
                               </div>
-                              <p className="mt-0.5 text-zinc-500">{kp.notes}</p>
+                              <p className="mt-1 leading-relaxed text-zinc-500">{kp.notes}</p>
                             </div>
                           </div>
                         ))}
@@ -617,7 +620,7 @@ export default function CaorRivalPage() {
                     >
                       {[1, 2, 3, 4, 5].map((n) => (
                         <option key={n} value={n}>
-                          {'★'.repeat(n)}
+                          Nivel {n} de 5
                         </option>
                       ))}
                     </Select>

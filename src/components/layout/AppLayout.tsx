@@ -46,34 +46,32 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
         )}
       </div>
       <nav className="flex-1 space-y-4 overflow-y-auto px-3 pb-4">
-        {/* Menú desplegable NUEVO: SISTEMA DIGITAL CAOR */}
+        {/* Sección desplegable Sistema Digital CAOR con la misma paleta sobria del sidebar */}
         {canSeeCaor && (
-          <div className="rounded-xl border border-gold-500/40 bg-black/20 p-1.5 shadow-inner">
+          <div>
+            <p className="px-2 pb-1 text-[10px] font-bold tracking-widest text-brand-300/70 uppercase">
+              Módulos Avanzados
+            </p>
             <button
               type="button"
               onClick={() => setCaorOpen((o) => !o)}
               className={cn(
-                'flex w-full items-center justify-between gap-2 rounded-lg px-2.5 py-2 text-left text-xs font-extrabold transition',
+                'flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors',
                 isInsideCaor
-                  ? 'bg-gold-500 text-brand-950 shadow-xs'
-                  : 'text-gold-400 hover:bg-white/10',
+                  ? 'bg-white/15 text-white shadow-inner'
+                  : 'text-brand-100/80 hover:bg-white/10 hover:text-white',
               )}
             >
-              <span className="flex items-center gap-2 min-w-0">
-                <Sparkles className="h-4 w-4 shrink-0" />
-                <span className="truncate">Sistema Digital CAOR</span>
+              <span className="flex min-w-0 items-center gap-3">
+                <Sparkles className="h-4.5 w-4.5 shrink-0" />
+                <span className="truncate">Sistema CAOR</span>
               </span>
-              <span className="flex items-center gap-1 shrink-0">
-                <span
-                  className={cn(
-                    'rounded-full px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider',
-                    isInsideCaor ? 'bg-brand-950 text-gold-400' : 'bg-gold-500 text-brand-950',
-                  )}
-                >
+              <span className="flex shrink-0 items-center gap-1.5">
+                <span className="rounded-md bg-white/15 px-1.5 py-0.5 text-[10px] font-semibold text-brand-100">
                   Nuevo
                 </span>
                 <ChevronDown
-                  className={cn('h-4 w-4 transition-transform', caorOpen && 'rotate-180')}
+                  className={cn('h-4 w-4 text-brand-200 transition-transform', caorOpen && 'rotate-180')}
                 />
               </span>
             </button>
@@ -86,7 +84,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
                   exit={{ height: 0, opacity: 0 }}
                   className="overflow-hidden"
                 >
-                  <div className="mt-1 space-y-0.5 border-l border-gold-500/30 pl-2">
+                  <div className="mt-1 ml-3 space-y-0.5 border-l border-white/15 pl-2.5">
                     {CAOR_NAV_ITEMS.map((item) => (
                       <NavLink
                         key={item.to}
@@ -97,12 +95,12 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
                           cn(
                             'flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors',
                             isActive
-                              ? 'bg-white/20 font-bold text-white shadow-inner'
-                              : 'text-brand-100/85 hover:bg-white/10 hover:text-white',
+                              ? 'bg-white/15 font-semibold text-white'
+                              : 'text-brand-100/75 hover:bg-white/10 hover:text-white',
                           )
                         }
                       >
-                        <item.icon className="h-3.5 w-3.5 shrink-0 text-gold-400" />
+                        <item.icon className="h-3.5 w-3.5 shrink-0" />
                         <span className="truncate">{item.label}</span>
                       </NavLink>
                     ))}

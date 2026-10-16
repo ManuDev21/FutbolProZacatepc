@@ -115,8 +115,8 @@ export default function TacticsPage() {
 
     const move = (ev: PointerEvent) => {
       if (dragSlot.current !== slotKey) return;
-      const x = clamp((ev.clientX - rect.left) / rect.width, 0.02, 0.98);
-      const y = clamp((ev.clientY - rect.top) / rect.height, 0.03, 0.97);
+      const x = clamp((ev.clientX - rect.left) / rect.width, 0.08, 0.92);
+      const y = clamp((ev.clientY - rect.top) / rect.height, 0.08, 0.92);
       setSlots((s) => s.map((sl) => (sl.key === slotKey ? { ...sl, x, y: 1 - y } : sl)));
       setDirty(true);
     };
@@ -286,12 +286,12 @@ export default function TacticsPage() {
         </div>
       </Card>
 
-      <div className="grid gap-4 xl:grid-cols-[1fr_300px]">
+      <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
         {/* Cancha */}
-        <Card className="overflow-hidden">
+        <Card className="min-w-0 overflow-hidden p-3 sm:p-4">
           <div
             ref={pitchRef}
-            className="relative mx-auto aspect-[3/4] w-full max-w-2xl touch-none select-none sm:aspect-[4/3]"
+            className="relative mx-auto aspect-3/4 max-h-[600px] w-full max-w-xl touch-none select-none overflow-hidden rounded-xl sm:aspect-4/3"
             style={{
               background: 'repeating-linear-gradient(0deg, #177541 0 10%, #126534 10% 20%)',
             }}
@@ -312,6 +312,8 @@ export default function TacticsPage() {
             {/* Piezas */}
             {slots.map((s) => {
               const p = playerOf(s.playerId);
+              const safeX = clamp(s.x, 0.08, 0.92);
+              const safeY = clamp(s.y, 0.08, 0.92);
               return (
                 <div
                   key={s.key}
@@ -320,18 +322,18 @@ export default function TacticsPage() {
                   onDragOver={(e) => e.preventDefault()}
                   onDrop={(e) => onDropToSlot(e, s.key)}
                   className={cn(
-                    'group absolute flex w-14 -translate-x-1/2 -translate-y-1/2 cursor-grab flex-col items-center active:cursor-grabbing',
+                    'group absolute flex w-12 -translate-x-1/2 -translate-y-1/2 cursor-grab flex-col items-center active:cursor-grabbing sm:w-14',
                     selectedPlayer && 'hover:scale-105',
                   )}
-                  style={{ left: `${s.x * 100}%`, top: `${(1 - s.y) * 100}%` }}
+                  style={{ left: `${safeX * 100}%`, top: `${(1 - safeY) * 100}%` }}
                 >
                   <div
                     className={cn(
-                      'relative flex h-11 w-11 items-center justify-center rounded-full border-2 shadow-lg transition-transform',
+                      'relative flex h-9 w-9 items-center justify-center rounded-full border-2 shadow-lg transition-transform sm:h-10 sm:w-10',
                       p
-                        ? 'border-gold-400 bg-brand-700'
+                        ? 'border-white bg-brand-700'
                         : 'border-dashed border-white/80 bg-white/15 backdrop-blur-[1px]',
-                      selectedPlayer && !p && 'border-gold-400 bg-gold-500/30',
+                      selectedPlayer && !p && 'border-white bg-brand-500/40',
                     )}
                   >
                     {p ? (
@@ -357,18 +359,18 @@ export default function TacticsPage() {
                       </button>
                     )}
                   </div>
-                  <span className="mt-0.5 max-w-16 truncate rounded bg-black/50 px-1 text-[9px] font-medium text-white">
+                  <span className="mt-0.5 max-w-14 truncate rounded bg-black/55 px-1 text-[9px] font-medium text-white">
                     {p ? p.lastName.split(' ')[0] : s.label}
                   </span>
                 </div>
               );
             })}
           </div>
-          <div className="flex items-center justify-between border-t border-zinc-100 px-4 py-2 text-[11px] text-zinc-400 dark:border-zinc-800">
+          <div className="mt-3 flex items-center justify-between border-t border-zinc-100 px-2 pt-3 text-xs text-zinc-500 dark:border-zinc-800">
             <span>
               {slots.filter((s) => s.playerId).length} de {format} posiciones ocupadas
             </span>
-            <span>{dirty ? '● Cambios sin guardar' : 'Sin cambios'}</span>
+            <span>{dirty ? 'Cambios sin guardar' : 'Sin cambios'}</span>
           </div>
         </Card>
 

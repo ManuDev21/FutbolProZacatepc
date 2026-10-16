@@ -145,12 +145,12 @@ export default function CaorTestsPage() {
   };
 
   return (
-    <div>
+    <div className="space-y-6">
       <CaorSubnav />
 
       <PageHeader
-        title="Test Físicos y Técnicos CAOR"
-        subtitle="Batería de pruebas condicionales y técnicas · 100% personalizable con ranking y marca objetivo"
+        title="Tests Físicos y Técnicos"
+        subtitle="Batería de pruebas condicionales y técnicas con ranking automático y marcas objetivo"
         actions={
           <Button onClick={openNew}>
             <Plus className="h-4 w-4" /> Registrar Test
@@ -158,34 +158,34 @@ export default function CaorTestsPage() {
         }
       />
 
-      {/* Catálogo visual de baterías de test */}
-      <Card className="mb-4">
+      {/* Catálogo visual de baterías de test con más espacio */}
+      <Card>
         <CardHeader
-          title="Catálogo de Baterías CAOR"
-          subtitle="Haz clic en cualquier prueba para cargarla o filtrar el ranking"
+          title="Baterías de evaluación disponibles"
+          subtitle="Selecciona una prueba para filtrar el ranking o registrar una medición rápida"
         />
-        <CardBody>
-          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-5">
+        <CardBody className="p-5">
+          <div className="grid gap-3.5 sm:grid-cols-2 lg:grid-cols-5">
             {CAOR_TEST_PRESETS.map((pr, idx) => (
               <div
                 key={pr.name}
                 onClick={() =>
                   setFilterTestName((curr) => (curr === pr.name ? '' : pr.name))
                 }
-                className={`cursor-pointer rounded-xl border p-2.5 text-xs transition ${
+                className={`cursor-pointer rounded-xl border p-3.5 text-xs transition ${
                   filterTestName === pr.name
                     ? 'border-brand-600 bg-brand-50/70 dark:bg-brand-950/40'
                     : 'border-zinc-200 hover:border-brand-400 dark:border-zinc-800'
                 }`}
               >
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between gap-1">
                   <Badge tone="green">{CATEGORY_LABELS[pr.category]}</Badge>
                   <span className="font-mono text-[10px] text-zinc-400">
                     Meta: {pr.benchmark} {pr.unit}
                   </span>
                 </div>
-                <p className="mt-1.5 font-bold text-zinc-800 dark:text-zinc-100">{pr.name}</p>
-                <p className="mt-0.5 line-clamp-1 text-[11px] text-zinc-500">{pr.description}</p>
+                <p className="mt-2.5 font-bold text-zinc-800 dark:text-zinc-100">{pr.name}</p>
+                <p className="mt-1 line-clamp-2 text-[11px] leading-relaxed text-zinc-500">{pr.description}</p>
                 <button
                   type="button"
                   onClick={(e) => {
@@ -194,9 +194,9 @@ export default function CaorTestsPage() {
                     applyPreset(String(idx));
                     setModalOpen(true);
                   }}
-                  className="mt-2 text-[11px] font-bold text-brand-600 hover:underline dark:text-brand-400"
+                  className="mt-3 text-[11px] font-semibold text-brand-600 hover:underline dark:text-brand-400"
                 >
-                  + Evaluar esta prueba
+                  Evaluar esta prueba
                 </button>
               </div>
             ))}
@@ -206,7 +206,7 @@ export default function CaorTestsPage() {
 
       {/* Tabla de resultados / Ranking */}
       <Card>
-        <div className="flex flex-wrap items-center gap-2 border-b border-zinc-100 p-3 dark:border-zinc-800">
+        <div className="flex flex-wrap items-center gap-3 border-b border-zinc-100 p-4 dark:border-zinc-800">
           <Select
             value={filterTestName}
             onChange={(e) => setFilterTestName(e.target.value)}
@@ -215,7 +215,7 @@ export default function CaorTestsPage() {
             <option value="">Todas las pruebas (orden cronológico)</option>
             {distinctTestNames.map((n) => (
               <option key={n} value={n}>
-                🏆 Ranking: {n}
+                Ranking: {n}
               </option>
             ))}
           </Select>
@@ -369,7 +369,7 @@ export default function CaorTestsPage() {
                   {pr.name} ({pr.unit})
                 </option>
               ))}
-              <option value="custom">✨ Crear Test 100% Personalizado...</option>
+              <option value="custom">Crear Test 100% Personalizado...</option>
             </Select>
           </Field>
 

@@ -14,8 +14,15 @@ import {
   BookPlus,
   Move,
   ArrowUpRight,
-  Sparkles,
   FolderOpen,
+  User,
+  Shield,
+  CircleDot,
+  Triangle,
+  SquareDashed,
+  Sliders,
+  FileText,
+  X,
 } from 'lucide-react';
 import { CaorSubnav } from '@/components/caor/CaorSubnav';
 import { useCaorPlays, useCategories, usePlayers } from '@/hooks/useData';
@@ -44,32 +51,30 @@ interface PaletteItem {
 }
 
 const PALETTE: PaletteItem[] = [
-  { kind: 'player_own', name: 'Jugador Cañeros', defaultLabel: '10', defaultColor: '#177541' },
-  { kind: 'player_rival', name: 'Jugador Rival', defaultLabel: 'R', defaultColor: '#dc2626' },
-  { kind: 'goalkeeper', name: 'Portero', defaultLabel: '1', defaultColor: '#f5a801' },
-  { kind: 'coach', name: 'Entrenador', defaultLabel: 'DT', defaultColor: '#0284c7' },
-  { kind: 'ball', name: 'Balón', defaultLabel: '⚽', defaultColor: '#ffffff' },
-  { kind: 'cone', name: 'Cono', defaultLabel: '▲', defaultColor: '#f97316' },
-  { kind: 'pole', name: 'Pica / Bastón', defaultLabel: '|', defaultColor: '#eab308' },
-  { kind: 'hurdle', name: 'Valla', defaultLabel: '∏', defaultColor: '#facc15' },
-  { kind: 'ladder', name: 'Escalera', defaultLabel: '▤', defaultColor: '#38bdf8' },
-  { kind: 'ring', name: 'Aro coordinación', defaultLabel: '◯', defaultColor: '#a855f7' },
-  { kind: 'mannequin', name: 'Maniquí / Barrera', defaultLabel: '🧍', defaultColor: '#64748b' },
-  { kind: 'minigoal', name: 'Mini portería', defaultLabel: '🥅', defaultColor: '#e2e8f0' },
-  { kind: 'zone', name: 'Zona / Cuadrante', defaultLabel: 'ZONA', defaultColor: '#22c55e' },
+  { kind: 'player_own', name: 'Jugador', defaultLabel: '10', defaultColor: '#177541' },
+  { kind: 'player_rival', name: 'Rival', defaultLabel: 'R', defaultColor: '#dc2626' },
+  { kind: 'goalkeeper', name: 'Portero', defaultLabel: '1', defaultColor: '#0284c7' },
+  { kind: 'coach', name: 'Entrenador', defaultLabel: 'DT', defaultColor: '#475569' },
+  { kind: 'ball', name: 'Balón', defaultLabel: 'B', defaultColor: '#ffffff' },
+  { kind: 'cone', name: 'Cono', defaultLabel: 'C', defaultColor: '#ea580c' },
+  { kind: 'hurdle', name: 'Valla', defaultLabel: 'VALLA', defaultColor: '#eab308' },
+  { kind: 'ladder', name: 'Escalera', defaultLabel: 'ESC', defaultColor: '#0ea5e9' },
+  { kind: 'mannequin', name: 'Barrera', defaultLabel: 'BAR', defaultColor: '#64748b' },
+  { kind: 'minigoal', name: 'Mini arco', defaultLabel: 'ARCO', defaultColor: '#334155' },
+  { kind: 'zone', name: 'Zona', defaultLabel: 'ZONA', defaultColor: '#16a34a' },
 ];
 
 const INITIAL_ELEMENTS: CaorCanvasElement[] = [
-  { id: 'gk-1', kind: 'goalkeeper', label: '1', color: '#f5a801', x: 0.08, y: 0.5 },
-  { id: 'own-4', kind: 'player_own', label: '4', color: '#177541', x: 0.24, y: 0.32 },
-  { id: 'own-5', kind: 'player_own', label: '5', color: '#177541', x: 0.24, y: 0.68 },
+  { id: 'gk-1', kind: 'goalkeeper', label: '1', color: '#0284c7', x: 0.1, y: 0.5 },
+  { id: 'own-4', kind: 'player_own', label: '4', color: '#177541', x: 0.25, y: 0.32 },
+  { id: 'own-5', kind: 'player_own', label: '5', color: '#177541', x: 0.25, y: 0.68 },
   { id: 'own-6', kind: 'player_own', label: '6', color: '#177541', x: 0.44, y: 0.5 },
   { id: 'own-8', kind: 'player_own', label: '8', color: '#177541', x: 0.62, y: 0.28 },
   { id: 'own-10', kind: 'player_own', label: '10', color: '#177541', x: 0.62, y: 0.72 },
-  { id: 'own-9', kind: 'player_own', label: '9', color: '#177541', x: 0.82, y: 0.5 },
+  { id: 'own-9', kind: 'player_own', label: '9', color: '#177541', x: 0.8, y: 0.5 },
   { id: 'riv-1', kind: 'player_rival', label: 'R1', color: '#dc2626', x: 0.55, y: 0.42 },
   { id: 'riv-2', kind: 'player_rival', label: 'R2', color: '#dc2626', x: 0.72, y: 0.52 },
-  { id: 'ball-1', kind: 'ball', label: '⚽', color: '#ffffff', x: 0.46, y: 0.48 },
+  { id: 'ball-1', kind: 'ball', label: 'B', color: '#ffffff', x: 0.47, y: 0.48 },
 ];
 
 function snapshotPositions(elements: CaorCanvasElement[]): Record<string, { x: number; y: number }> {
@@ -85,23 +90,38 @@ function makeDefaultKeyframes(elements: CaorCanvasElement[]): CaorKeyframe[] {
   const pos2: Record<string, { x: number; y: number }> = {};
   for (const el of elements) {
     if (el.id === 'own-6') pos2[el.id] = { x: 0.52, y: 0.45 };
-    else if (el.id === 'own-8') pos2[el.id] = { x: 0.74, y: 0.22 };
-    else if (el.id === 'own-9') pos2[el.id] = { x: 0.88, y: 0.46 };
-    else if (el.id === 'ball-1') pos2[el.id] = { x: 0.74, y: 0.24 };
+    else if (el.id === 'own-8') pos2[el.id] = { x: 0.74, y: 0.24 };
+    else if (el.id === 'own-9') pos2[el.id] = { x: 0.86, y: 0.46 };
+    else if (el.id === 'ball-1') pos2[el.id] = { x: 0.74, y: 0.26 };
     else pos2[el.id] = { x: el.x, y: el.y };
   }
   const pos3: Record<string, { x: number; y: number }> = {};
   for (const el of elements) {
-    if (el.id === 'own-9') pos3[el.id] = { x: 0.9, y: 0.5 };
-    else if (el.id === 'own-10') pos3[el.id] = { x: 0.8, y: 0.64 };
-    else if (el.id === 'ball-1') pos3[el.id] = { x: 0.95, y: 0.5 };
+    if (el.id === 'own-9') pos3[el.id] = { x: 0.88, y: 0.5 };
+    else if (el.id === 'own-10') pos3[el.id] = { x: 0.78, y: 0.64 };
+    else if (el.id === 'ball-1') pos3[el.id] = { x: 0.91, y: 0.5 };
     else pos3[el.id] = pos2[el.id] ?? { x: el.x, y: el.y };
   }
   return [
     { id: 'kf-1', name: 'Paso 1 · Inicio', durationMs: 1400, positions: pos1, arrows: [] },
-    { id: 'kf-2', name: 'Paso 2 · Ruptura por banda', durationMs: 1400, positions: pos2, arrows: [] },
-    { id: 'kf-3', name: 'Paso 3 · Centro y remate', durationMs: 1400, positions: pos3, arrows: [] },
+    { id: 'kf-2', name: 'Paso 2 · Ruptura exterior', durationMs: 1400, positions: pos2, arrows: [] },
+    { id: 'kf-3', name: 'Paso 3 · Definición', durationMs: 1400, positions: pos3, arrows: [] },
   ];
+}
+
+/** Icono vectorial limpio de balón de fútbol (sin emojis). */
+function BallSvg() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-4 w-4 text-zinc-900" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <circle cx="12" cy="12" r="9" fill="#ffffff" />
+      <polygon points="12,7.5 15,9.7 13.8,13.3 10.2,13.3 9,9.7" fill="currentColor" />
+      <line x1="12" y1="3" x2="12" y2="7.5" />
+      <line x1="15" y1="9.7" x2="20" y2="8.5" />
+      <line x1="13.8" y1="13.3" x2="17.5" y2="18.2" />
+      <line x1="10.2" y1="13.3" x2="6.5" y2="18.2" />
+      <line x1="9" y1="9.7" x2="4" y2="8.5" />
+    </svg>
+  );
 }
 
 export default function CaorStudioPage() {
@@ -112,7 +132,7 @@ export default function CaorStudioPage() {
   const players = usePlayers();
 
   const [currentPlayId, setCurrentPlayId] = useState<string | null>(null);
-  const [title, setTitle] = useState('Salida limpia + Ruptura exterior');
+  const [title, setTitle] = useState('Salida limpia y ruptura por banda');
   const [kind, setKind] = useState<CaorPlay['kind']>('jugada');
   const [folder, setFolder] = useState('Automatismos Ofensivos');
   const [categoryId, setCategoryId] = useState('');
@@ -130,6 +150,9 @@ export default function CaorStudioPage() {
   const [activeFrameIdx, setActiveFrameIdx] = useState(0);
   const [selectedId, setSelectedId] = useState<string | null>('own-10');
 
+  // Pestaña activa del panel lateral para evitar saturación de formularios
+  const [inspectorTab, setInspectorTab] = useState<'element' | 'metadata'>('element');
+
   // Modos de interacción y flechas
   const [toolMode, setToolMode] = useState<'move' | 'arrow_pass' | 'arrow_run' | 'arrow_shoot'>('move');
   const [drawingStart, setDrawingStart] = useState<{ x: number; y: number } | null>(null);
@@ -141,13 +164,12 @@ export default function CaorStudioPage() {
   const [showTrails, setShowTrails] = useState(true);
   const [isLiveRecording, setIsLiveRecording] = useState(false);
   const [animPositions, setAnimPositions] = useState<Record<string, { x: number; y: number }> | null>(null);
-  const [playProgress, setPlayProgress] = useState(0); // 0..1
+  const [playProgress, setPlayProgress] = useState(0);
 
   const pitchRef = useRef<HTMLDivElement>(null);
   const draggingIdRef = useRef<string | null>(null);
   const liveRecTimerRef = useRef<number | null>(null);
 
-  // Cargar jugada si viene ?id= en la URL
   const requestedId = params.get('id');
   useEffect(() => {
     if (!requestedId || !plays) return;
@@ -174,20 +196,27 @@ export default function CaorStudioPage() {
     const firstFrame = p.keyframes[0];
     const hydrated = p.elements.map((el) => ({
       ...el,
-      x: firstFrame?.positions[el.id]?.x ?? el.x,
-      y: firstFrame?.positions[el.id]?.y ?? el.y,
+      x: clamp(firstFrame?.positions[el.id]?.x ?? el.x, 0.07, 0.93),
+      y: clamp(firstFrame?.positions[el.id]?.y ?? el.y, 0.08, 0.92),
     }));
     setElements(hydrated);
     setKeyframes(
       p.keyframes.length > 0
         ? p.keyframes.map((k) => ({ ...k, positions: { ...k.positions }, arrows: k.arrows ?? [] }))
-        : [{ id: uuid(), name: 'Paso 1 · Inicio', durationMs: 1400, positions: snapshotPositions(hydrated), arrows: [] }],
+        : [
+            {
+              id: uuid(),
+              name: 'Paso 1 · Inicio',
+              durationMs: 1400,
+              positions: snapshotPositions(hydrated),
+              arrows: [],
+            },
+          ],
     );
     setActiveFrameIdx(0);
     setSelectedId(hydrated[0]?.id ?? null);
   };
 
-  // Cambiar de fotograma activo sincroniza las posiciones de los elementos
   const selectKeyframe = (idx: number) => {
     if (idx < 0 || idx >= keyframes.length) return;
     setIsPlaying(false);
@@ -204,7 +233,6 @@ export default function CaorStudioPage() {
     );
   };
 
-  // Motor de animación fluida entre keyframes
   useEffect(() => {
     if (!isPlaying) {
       setAnimPositions(null);
@@ -218,7 +246,9 @@ export default function CaorStudioPage() {
 
     let rafId = 0;
     const segments = keyframes.length - 1;
-    const segDurations = keyframes.slice(0, segments).map((k) => Math.max(300, (k.durationMs || 1400) / speed));
+    const segDurations = keyframes
+      .slice(0, segments)
+      .map((k) => Math.max(300, (k.durationMs || 1400) / speed));
     const totalMs = segDurations.reduce((a, b) => a + b, 0);
     let startTime = performance.now();
 
@@ -240,7 +270,6 @@ export default function CaorStudioPage() {
 
       setPlayProgress(totalMs > 0 ? elapsed / totalMs : 0);
 
-      // Localizar segmento actual
       let acc = 0;
       let segIdx = 0;
       for (let i = 0; i < segments; i++) {
@@ -251,7 +280,6 @@ export default function CaorStudioPage() {
         acc += segDurations[i];
       }
       const localT = clamp((elapsed - acc) / segDurations[segIdx], 0, 1);
-      // Suavizado easeInOutCubic
       const eased = localT < 0.5 ? 4 * localT * localT * localT : 1 - Math.pow(-2 * localT + 2, 3) / 2;
 
       const fromPos = keyframes[segIdx].positions;
@@ -274,7 +302,6 @@ export default function CaorStudioPage() {
     return () => cancelAnimationFrame(rafId);
   }, [isPlaying, keyframes, elements, loop, speed]);
 
-  // Grabación en vivo mientras el usuario mueve elementos
   useEffect(() => {
     if (!isLiveRecording) {
       if (liveRecTimerRef.current) window.clearInterval(liveRecTimerRef.current);
@@ -289,7 +316,7 @@ export default function CaorStudioPage() {
           const nextNum = prev.length + 1;
           const next: CaorKeyframe = {
             id: uuid(),
-            name: `Paso ${nextNum} (en vivo)`,
+            name: `Paso ${nextNum}`,
             durationMs: 700,
             positions: snap,
             arrows: [],
@@ -306,13 +333,12 @@ export default function CaorStudioPage() {
     };
   }, [isLiveRecording]);
 
-  // Coordenadas normalizadas del puntero sobre la cancha
   const getCoords = (clientX: number, clientY: number) => {
     const rect = pitchRef.current?.getBoundingClientRect();
     if (!rect) return { x: 0.5, y: 0.5 };
     return {
-      x: clamp((clientX - rect.left) / rect.width, 0.03, 0.97),
-      y: clamp((clientY - rect.top) / rect.height, 0.04, 0.96),
+      x: clamp((clientX - rect.left) / rect.width, 0.06, 0.94),
+      y: clamp((clientY - rect.top) / rect.height, 0.08, 0.92),
     };
   };
 
@@ -346,7 +372,6 @@ export default function CaorStudioPage() {
     draggingIdRef.current = null;
   };
 
-  // Dibujo de flechas tácticas sobre la cancha
   const handlePitchPointerDown = (e: React.PointerEvent) => {
     if (toolMode === 'move') return;
     const coords = getCoords(e.clientX, e.clientY);
@@ -360,7 +385,7 @@ export default function CaorStudioPage() {
     if (dist > 0.03) {
       const kindMap = {
         arrow_pass: { kind: 'pass' as const, color: '#ffffff' },
-        arrow_run: { kind: 'run' as const, color: '#f5a801' },
+        arrow_run: { kind: 'run' as const, color: '#cbd5e1' },
         arrow_shoot: { kind: 'shoot' as const, color: '#ef4444' },
       };
       const cfg = kindMap[toolMode];
@@ -382,7 +407,6 @@ export default function CaorStudioPage() {
     setDrawingStart(null);
   };
 
-  // Agregar nuevo elemento desde la paleta
   const addElement = (item: PaletteItem) => {
     const sameKindCount = elements.filter((e) => e.kind === item.kind).length;
     const label =
@@ -396,8 +420,8 @@ export default function CaorStudioPage() {
       kind: item.kind,
       label,
       color: item.defaultColor,
-      x: clamp(0.35 + (sameKindCount % 5) * 0.07, 0.1, 0.9),
-      y: clamp(0.3 + (sameKindCount % 4) * 0.12, 0.12, 0.88),
+      x: clamp(0.35 + (sameKindCount % 5) * 0.07, 0.12, 0.88),
+      y: clamp(0.3 + (sameKindCount % 4) * 0.12, 0.14, 0.86),
       size: 1,
       width: item.kind === 'zone' ? 0.22 : undefined,
       height: item.kind === 'zone' ? 0.28 : undefined,
@@ -413,21 +437,20 @@ export default function CaorStudioPage() {
     setToolMode('move');
   };
 
-  // ➕ Duplicar jugador o elemento seleccionado
   const duplicateSelected = () => {
     const sel = elements.find((e) => e.id === selectedId);
     if (!sel) {
-      toast.info('Selecciona primero un jugador o elemento en la cancha');
+      toast.info('Selecciona primero un elemento en la cancha');
       return;
     }
     const numeric = Number(sel.label);
-    const nextLabel = !Number.isNaN(numeric) && numeric > 0 ? String(numeric + 1) : `${sel.label}+`;
+    const nextLabel = !Number.isNaN(numeric) && numeric > 0 ? String(numeric + 1) : sel.label;
     const copy: CaorCanvasElement = {
       ...sel,
       id: uuid(),
       label: nextLabel,
-      x: clamp(sel.x + 0.05, 0.05, 0.95),
-      y: clamp(sel.y + 0.06, 0.06, 0.94),
+      x: clamp(sel.x + 0.05, 0.08, 0.92),
+      y: clamp(sel.y + 0.06, 0.08, 0.92),
     };
     setElements((prev) => [...prev, copy]);
     setKeyframes((prev) =>
@@ -438,15 +461,15 @@ export default function CaorStudioPage() {
           positions: {
             ...kf.positions,
             [copy.id]: {
-              x: clamp(basePos.x + 0.05, 0.05, 0.95),
-              y: clamp(basePos.y + 0.06, 0.06, 0.94),
+              x: clamp(basePos.x + 0.05, 0.08, 0.92),
+              y: clamp(basePos.y + 0.06, 0.08, 0.92),
             },
           },
         };
       }),
     );
     setSelectedId(copy.id);
-    toast.success('Elemento duplicado', `${copy.label} añadido a la cancha`);
+    toast.success('Elemento duplicado');
   };
 
   const removeSelected = () => {
@@ -462,7 +485,6 @@ export default function CaorStudioPage() {
     setSelectedId(null);
   };
 
-  // 🎥 Grabar un nuevo paso (keyframe) clonando las posiciones actuales
   const recordStep = () => {
     const snap = snapshotPositions(elements);
     const nextNum = keyframes.length + 1;
@@ -476,7 +498,7 @@ export default function CaorStudioPage() {
     const next = [...keyframes, newKf];
     setKeyframes(next);
     setActiveFrameIdx(next.length - 1);
-    toast.success(`Paso ${nextNum} grabado`, 'Ahora mueve jugadores o balón para configurar este fotograma.');
+    toast.success(`Paso ${nextNum} agregado`, 'Ahora mueve las piezas en la cancha para definir su posición.');
   };
 
   const removeKeyframe = (idx: number) => {
@@ -496,15 +518,16 @@ export default function CaorStudioPage() {
     );
   };
 
-  // Plantillas rápidas
   const loadPresetFormation = (preset: 'rondo' | 'salida_f11' | 'ataque_f7' | 'vacio') => {
     setIsPlaying(false);
     if (preset === 'vacio') {
       const ballOnly: CaorCanvasElement[] = [
-        { id: uuid(), kind: 'ball', label: '⚽', color: '#ffffff', x: 0.5, y: 0.5 },
+        { id: uuid(), kind: 'ball', label: 'B', color: '#ffffff', x: 0.5, y: 0.5 },
       ];
       setElements(ballOnly);
-      setKeyframes([{ id: uuid(), name: 'Paso 1 · Inicio', durationMs: 1400, positions: snapshotPositions(ballOnly), arrows: [] }]);
+      setKeyframes([
+        { id: uuid(), name: 'Paso 1 · Inicio', durationMs: 1400, positions: snapshotPositions(ballOnly), arrows: [] },
+      ]);
       setActiveFrameIdx(0);
       return;
     }
@@ -513,54 +536,57 @@ export default function CaorStudioPage() {
       setTitle('Rondo 4 vs 2 en espacio reducido');
       setKind('ejercicio');
       const els: CaorCanvasElement[] = [
-        { id: uuid(), kind: 'zone', label: 'RONDO 12x12m', color: '#22c55e', x: 0.5, y: 0.5, width: 0.48, height: 0.56 },
-        { id: uuid(), kind: 'cone', label: '▲', color: '#f97316', x: 0.26, y: 0.22 },
-        { id: uuid(), kind: 'cone', label: '▲', color: '#f97316', x: 0.74, y: 0.22 },
-        { id: uuid(), kind: 'cone', label: '▲', color: '#f97316', x: 0.26, y: 0.78 },
-        { id: uuid(), kind: 'cone', label: '▲', color: '#f97316', x: 0.74, y: 0.78 },
-        { id: uuid(), kind: 'player_own', label: 'A', color: '#177541', x: 0.5, y: 0.2 },
-        { id: uuid(), kind: 'player_own', label: 'B', color: '#177541', x: 0.76, y: 0.5 },
-        { id: uuid(), kind: 'player_own', label: 'C', color: '#177541', x: 0.5, y: 0.8 },
-        { id: uuid(), kind: 'player_own', label: 'D', color: '#177541', x: 0.24, y: 0.5 },
+        { id: uuid(), kind: 'zone', label: 'RONDO 12x12m', color: '#16a34a', x: 0.5, y: 0.5, width: 0.48, height: 0.56 },
+        { id: uuid(), kind: 'cone', label: 'C', color: '#ea580c', x: 0.28, y: 0.24 },
+        { id: uuid(), kind: 'cone', label: 'C', color: '#ea580c', x: 0.72, y: 0.24 },
+        { id: uuid(), kind: 'cone', label: 'C', color: '#ea580c', x: 0.28, y: 0.76 },
+        { id: uuid(), kind: 'cone', label: 'C', color: '#ea580c', x: 0.72, y: 0.76 },
+        { id: uuid(), kind: 'player_own', label: '4', color: '#177541', x: 0.5, y: 0.22 },
+        { id: uuid(), kind: 'player_own', label: '8', color: '#177541', x: 0.74, y: 0.5 },
+        { id: uuid(), kind: 'player_own', label: '10', color: '#177541', x: 0.5, y: 0.78 },
+        { id: uuid(), kind: 'player_own', label: '6', color: '#177541', x: 0.26, y: 0.5 },
         { id: uuid(), kind: 'player_rival', label: 'R1', color: '#dc2626', x: 0.45, y: 0.44 },
         { id: uuid(), kind: 'player_rival', label: 'R2', color: '#dc2626', x: 0.56, y: 0.56 },
-        { id: uuid(), kind: 'ball', label: '⚽', color: '#ffffff', x: 0.5, y: 0.24 },
+        { id: uuid(), kind: 'ball', label: 'B', color: '#ffffff', x: 0.5, y: 0.26 },
       ];
       setElements(els);
-      setKeyframes([{ id: uuid(), name: 'Paso 1 · Inicio Rondo', durationMs: 1200, positions: snapshotPositions(els), arrows: [] }]);
+      setKeyframes([
+        { id: uuid(), name: 'Paso 1 · Inicio Rondo', durationMs: 1200, positions: snapshotPositions(els), arrows: [] },
+      ]);
       setActiveFrameIdx(0);
       return;
     }
     if (preset === 'ataque_f7') {
       setPitchType('f7');
-      setTitle('Oleada ofensiva 2-3-1 Fútbol 7');
+      setTitle('Estructura ofensiva 2-3-1 Fútbol 7');
       setKind('jugada');
       const els: CaorCanvasElement[] = [
-        { id: uuid(), kind: 'goalkeeper', label: '1', color: '#f5a801', x: 0.08, y: 0.5 },
-        { id: uuid(), kind: 'player_own', label: '2', color: '#177541', x: 0.26, y: 0.3 },
-        { id: uuid(), kind: 'player_own', label: '3', color: '#177541', x: 0.26, y: 0.7 },
+        { id: uuid(), kind: 'goalkeeper', label: '1', color: '#0284c7', x: 0.1, y: 0.5 },
+        { id: uuid(), kind: 'player_own', label: '2', color: '#177541', x: 0.28, y: 0.3 },
+        { id: uuid(), kind: 'player_own', label: '3', color: '#177541', x: 0.28, y: 0.7 },
         { id: uuid(), kind: 'player_own', label: '6', color: '#177541', x: 0.5, y: 0.5 },
-        { id: uuid(), kind: 'player_own', label: '7', color: '#177541', x: 0.58, y: 0.2 },
-        { id: uuid(), kind: 'player_own', label: '11', color: '#177541', x: 0.58, y: 0.8 },
+        { id: uuid(), kind: 'player_own', label: '7', color: '#177541', x: 0.58, y: 0.22 },
+        { id: uuid(), kind: 'player_own', label: '11', color: '#177541', x: 0.58, y: 0.78 },
         { id: uuid(), kind: 'player_own', label: '9', color: '#177541', x: 0.8, y: 0.5 },
-        { id: uuid(), kind: 'ball', label: '⚽', color: '#ffffff', x: 0.52, y: 0.48 },
+        { id: uuid(), kind: 'ball', label: 'B', color: '#ffffff', x: 0.52, y: 0.48 },
       ];
       setElements(els);
-      setKeyframes([{ id: uuid(), name: 'Paso 1 · Estructura 2-3-1', durationMs: 1300, positions: snapshotPositions(els), arrows: [] }]);
+      setKeyframes([
+        { id: uuid(), name: 'Paso 1 · Estructura 2-3-1', durationMs: 1300, positions: snapshotPositions(els), arrows: [] },
+      ]);
       setActiveFrameIdx(0);
       return;
     }
-    // salida_f11
     setPitchType('f11');
     setElements(INITIAL_ELEMENTS);
     setKeyframes(makeDefaultKeyframes(INITIAL_ELEMENTS));
     setActiveFrameIdx(0);
   };
 
-  // 💾 Guardar jugada/ejercicio en IndexedDB
   const savePlay = async (alsoExportToExercises = false) => {
     if (!title.trim()) {
       toast.warning('Escribe un título para la jugada o ejercicio');
+      setInspectorTab('metadata');
       return;
     }
     const tags = tagsText
@@ -586,11 +612,11 @@ export default function CaorStudioPage() {
     let saved: CaorPlay | undefined;
     if (currentPlayId) {
       saved = await caorPlaysService.update(currentPlayId, payload);
-      toast.success('Jugada CAOR actualizada', title);
+      toast.success('Jugada actualizada', title);
     } else {
       saved = await caorPlaysService.create(payload);
       setCurrentPlayId(saved.id);
-      toast.success('Guardado en tu Biblioteca CAOR', title);
+      toast.success('Guardado en Mi Biblioteca', title);
     }
     if (alsoExportToExercises && saved) {
       await caorPlaysService.exportToExerciseLibrary(saved);
@@ -607,14 +633,14 @@ export default function CaorStudioPage() {
   const currentPositions = animPositions ?? activeFrame?.positions ?? {};
 
   return (
-    <div>
+    <div className="space-y-6">
       <CaorSubnav />
 
       <PageHeader
-        title="Estudio Táctico & Ejercicios CAOR"
-        subtitle="↔️ Mueve elementos · ➕ Duplica jugadores · 🎥 Graba movimientos · ▶️ Reproduce tus jugadas · 💾 Guarda en tu biblioteca"
+        title="Estudio Táctico y Ejercicios"
+        subtitle="Coloca elementos en la cancha, graba cada paso de la jugada y reprodúcela en movimiento"
         actions={
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2.5">
             <Button
               variant="secondary"
               size="sm"
@@ -624,188 +650,164 @@ export default function CaorStudioPage() {
                 toast.info('Lienzo reiniciado');
               }}
             >
-              <RotateCcw className="h-4 w-4" /> Nueva jugada
+              <RotateCcw className="h-4 w-4" /> Reiniciar
             </Button>
             <Button variant="secondary" size="sm" onClick={() => savePlay(true)}>
-              <BookPlus className="h-4 w-4" /> Guardar + Enviar a Ejercicios
+              <BookPlus className="h-4 w-4" /> Guardar y enviar a Ejercicios
             </Button>
             <Button size="sm" onClick={() => savePlay(false)}>
-              <Save className="h-4 w-4" /> {currentPlayId ? 'Actualizar en CAOR' : 'Guardar en Biblioteca CAOR'}
+              <Save className="h-4 w-4" /> {currentPlayId ? 'Actualizar jugada' : 'Guardar en Mi Biblioteca'}
             </Button>
           </div>
         }
       />
 
-      {/* Barra de herramientas principal */}
-      <Card className="mb-4 p-3">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          {/* Paleta de elementos arrastrables */}
-          <div className="flex flex-wrap items-center gap-1.5">
-            <span className="mr-1 text-xs font-bold text-zinc-500 uppercase">Añadir a cancha:</span>
-            {PALETTE.map((item) => (
-              <button
-                key={item.kind}
-                type="button"
-                onClick={() => addElement(item)}
-                className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 text-xs font-semibold text-zinc-700 shadow-2xs transition hover:border-brand-500 hover:bg-brand-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
-                title={`Añadir ${item.name}`}
-              >
-                <span
-                  className="inline-flex h-4 w-4 items-center justify-center rounded-full text-[10px] font-bold text-white"
-                  style={{ backgroundColor: item.kind === 'ball' ? '#177541' : item.defaultColor }}
+      {/* Barra de controles limpia y espaciada */}
+      <Card className="p-4 sm:p-5">
+        <div className="flex flex-col gap-4">
+          {/* Fila 1: Paleta para añadir elementos y acciones sobre el elemento seleccionado */}
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="mr-1 text-xs font-semibold text-zinc-500">Añadir:</span>
+              {PALETTE.map((item) => (
+                <button
+                  key={item.kind}
+                  type="button"
+                  onClick={() => addElement(item)}
+                  className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 transition hover:border-brand-500 hover:bg-brand-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
                 >
-                  {item.defaultLabel.slice(0, 2)}
-                </span>
-                {item.name}
-              </button>
-            ))}
-          </div>
+                  {item.kind === 'ball' ? (
+                    <CircleDot className="h-3.5 w-3.5 text-brand-600" />
+                  ) : item.kind === 'cone' ? (
+                    <Triangle className="h-3.5 w-3.5 text-orange-500" />
+                  ) : item.kind === 'zone' ? (
+                    <SquareDashed className="h-3.5 w-3.5 text-emerald-600" />
+                  ) : item.kind === 'player_rival' ? (
+                    <Shield className="h-3.5 w-3.5 text-red-600" />
+                  ) : (
+                    <User className="h-3.5 w-3.5 text-brand-600" />
+                  )}
+                  {item.name}
+                </button>
+              ))}
+            </div>
 
-          {/* Acciones sobre selección */}
-          <div className="flex flex-wrap items-center gap-1.5">
-            <Button variant="gold" size="sm" onClick={duplicateSelected} title="Duplicar elemento seleccionado">
-              <Copy className="h-3.5 w-3.5" /> ➕ Duplicar jugador/item
-            </Button>
-            {selectedElement && (
-              <Button variant="danger" size="sm" onClick={removeSelected} title="Eliminar elemento seleccionado">
-                <Trash2 className="h-3.5 w-3.5" /> Quitar
+            <div className="flex items-center gap-2">
+              <Button variant="secondary" size="sm" onClick={duplicateSelected}>
+                <Copy className="h-3.5 w-3.5" /> Duplicar seleccionado
               </Button>
-            )}
-          </div>
-        </div>
-
-        {/* Segunda fila: modo puntero / flechas / plantillas */}
-        <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-zinc-100 pt-2.5 dark:border-zinc-800">
-          <div className="flex flex-wrap items-center gap-1.5">
-            <span className="text-xs font-semibold text-zinc-500">Herramienta:</span>
-            <button
-              type="button"
-              onClick={() => setToolMode('move')}
-              className={cn(
-                'inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-semibold',
-                toolMode === 'move'
-                  ? 'bg-brand-600 text-white'
-                  : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300',
+              {selectedElement && (
+                <Button variant="danger" size="sm" onClick={removeSelected}>
+                  <Trash2 className="h-3.5 w-3.5" /> Quitar
+                </Button>
               )}
-            >
-              <Move className="h-3.5 w-3.5" /> ↔️ Mover elementos
-            </button>
-            <button
-              type="button"
-              onClick={() => setToolMode('arrow_pass')}
-              className={cn(
-                'inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-semibold',
-                toolMode === 'arrow_pass'
-                  ? 'bg-brand-600 text-white'
-                  : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300',
-              )}
-            >
-              <ArrowUpRight className="h-3.5 w-3.5" /> Pase (línea)
-            </button>
-            <button
-              type="button"
-              onClick={() => setToolMode('arrow_run')}
-              className={cn(
-                'inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-semibold',
-                toolMode === 'arrow_run'
-                  ? 'bg-gold-500 text-brand-950'
-                  : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300',
-              )}
-            >
-              <ArrowUpRight className="h-3.5 w-3.5" /> Desmarque (punteada)
-            </button>
-            <button
-              type="button"
-              onClick={() => setToolMode('arrow_shoot')}
-              className={cn(
-                'inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-semibold',
-                toolMode === 'arrow_shoot'
-                  ? 'bg-red-600 text-white'
-                  : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300',
-              )}
-            >
-              <ArrowUpRight className="h-3.5 w-3.5" /> Disparo (roja)
-            </button>
-            {(activeFrame?.arrows?.length ?? 0) > 0 && (
-              <button
-                type="button"
-                onClick={clearArrowsInFrame}
-                className="rounded-lg px-2 py-1 text-xs text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30"
-              >
-                Limpiar flechas ({activeFrame.arrows?.length})
-              </button>
-            )}
+            </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-1.5">
-            <span className="text-xs font-semibold text-zinc-500">Cancha:</span>
-            {(
-              [
-                ['f11', 'Fútbol 11'],
-                ['f7', 'Fútbol 7'],
-                ['half', 'Media cancha'],
-                ['grid', 'Espacio reducido'],
-              ] as const
-            ).map(([k, label]) => (
+          {/* Fila 2: Herramienta de puntero/flechas y selector de cancha/plantillas */}
+          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-zinc-100 pt-3.5 dark:border-zinc-800">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-xs font-semibold text-zinc-500">Herramienta:</span>
               <button
-                key={k}
                 type="button"
-                onClick={() => setPitchType(k)}
+                onClick={() => setToolMode('move')}
                 className={cn(
-                  'rounded-lg px-2.5 py-1 text-xs font-semibold',
-                  pitchType === k
-                    ? 'bg-brand-700 text-white'
-                    : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300',
+                  'inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition',
+                  toolMode === 'move'
+                    ? 'bg-brand-600 text-white'
+                    : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300',
                 )}
               >
-                {label}
+                <Move className="h-3.5 w-3.5" /> Mover fichas
               </button>
-            ))}
+              <button
+                type="button"
+                onClick={() => setToolMode('arrow_pass')}
+                className={cn(
+                  'inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition',
+                  toolMode === 'arrow_pass'
+                    ? 'bg-brand-600 text-white'
+                    : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300',
+                )}
+              >
+                <ArrowUpRight className="h-3.5 w-3.5" /> Flecha de pase
+              </button>
+              <button
+                type="button"
+                onClick={() => setToolMode('arrow_run')}
+                className={cn(
+                  'inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition',
+                  toolMode === 'arrow_run'
+                    ? 'bg-brand-600 text-white'
+                    : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300',
+                )}
+              >
+                <ArrowUpRight className="h-3.5 w-3.5" /> Desmarque
+              </button>
+              <button
+                type="button"
+                onClick={() => setToolMode('arrow_shoot')}
+                className={cn(
+                  'inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition',
+                  toolMode === 'arrow_shoot'
+                    ? 'bg-red-600 text-white'
+                    : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300',
+                )}
+              >
+                <ArrowUpRight className="h-3.5 w-3.5" /> Disparo
+              </button>
+              {(activeFrame?.arrows?.length ?? 0) > 0 && (
+                <button
+                  type="button"
+                  onClick={clearArrowsInFrame}
+                  className="rounded-lg px-2.5 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30"
+                >
+                  Borrar flechas ({activeFrame.arrows?.length})
+                </button>
+              )}
+            </div>
 
-            <span className="ml-2 text-xs font-semibold text-zinc-500">Plantillas:</span>
-            <button
-              type="button"
-              onClick={() => loadPresetFormation('salida_f11')}
-              className="rounded-lg bg-zinc-100 px-2 py-1 text-xs font-medium hover:bg-zinc-200 dark:bg-zinc-800"
-            >
-              Salida F11
-            </button>
-            <button
-              type="button"
-              onClick={() => loadPresetFormation('ataque_f7')}
-              className="rounded-lg bg-zinc-100 px-2 py-1 text-xs font-medium hover:bg-zinc-200 dark:bg-zinc-800"
-            >
-              Ataque F7
-            </button>
-            <button
-              type="button"
-              onClick={() => loadPresetFormation('rondo')}
-              className="rounded-lg bg-zinc-100 px-2 py-1 text-xs font-medium hover:bg-zinc-200 dark:bg-zinc-800"
-            >
-              Rondo 4v2
-            </button>
-            <button
-              type="button"
-              onClick={() => loadPresetFormation('vacio')}
-              className="rounded-lg bg-zinc-100 px-2 py-1 text-xs font-medium hover:bg-zinc-200 dark:bg-zinc-800"
-            >
-              Vaciar
-            </button>
+            <div className="flex flex-wrap items-center gap-2">
+              <Select
+                value={pitchType}
+                onChange={(e) => setPitchType(e.target.value as CaorPitchType)}
+                className="w-40 py-1.5 text-xs"
+              >
+                <option value="f11">Cancha Fútbol 11</option>
+                <option value="f7">Cancha Fútbol 7</option>
+                <option value="half">Media cancha</option>
+                <option value="grid">Espacio reducido</option>
+              </Select>
+              <Select
+                value=""
+                onChange={(e) => {
+                  const val = e.target.value as 'salida_f11' | 'ataque_f7' | 'rondo' | 'vacio' | '';
+                  if (val) loadPresetFormation(val);
+                }}
+                className="w-44 py-1.5 text-xs"
+              >
+                <option value="">Cargar plantilla base...</option>
+                <option value="salida_f11">Salida Fútbol 11</option>
+                <option value="ataque_f7">Ataque 2-3-1 Fútbol 7</option>
+                <option value="rondo">Rondo 4 vs 2</option>
+                <option value="vacio">Cancha limpia</option>
+              </Select>
+            </div>
           </div>
         </div>
       </Card>
 
-      <div className="grid gap-4 lg:grid-cols-[1fr_360px]">
-        {/* Columna izquierda: Cancha interactiva + Reproductor de jugadas */}
-        <div className="space-y-4">
-          <Card className="overflow-hidden">
-            {/* Cancha */}
+      {/* Área principal con min-w-0 para evitar cualquier desborde horizontal */}
+      <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
+        {/* Columna izquierda: Cancha estable + Controles de pasos */}
+        <div className="min-w-0 space-y-5">
+          <Card className="min-w-0 overflow-hidden p-3 sm:p-4">
             <div
               ref={pitchRef}
               onPointerDown={handlePitchPointerDown}
               onPointerUp={handlePitchPointerUp}
               className={cn(
-                'relative mx-auto aspect-16/10 w-full touch-none select-none overflow-hidden',
+                'relative mx-auto aspect-16/10 max-h-[540px] w-full touch-none select-none overflow-hidden rounded-xl',
                 toolMode !== 'move' && 'cursor-crosshair',
               )}
               style={{
@@ -815,21 +817,20 @@ export default function CaorStudioPage() {
                     : 'repeating-linear-gradient(90deg, #177541 0 10%, #126534 10% 20%)',
               }}
             >
-              {/* Marcaje SVG de la cancha según tipo */}
               <svg viewBox="0 0 160 100" className="pointer-events-none absolute inset-0 h-full w-full">
                 <defs>
                   <marker id="arrow-white" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
                     <path d="M0,0 L6,3 L0,6 Z" fill="#ffffff" />
                   </marker>
-                  <marker id="arrow-gold" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-                    <path d="M0,0 L6,3 L0,6 Z" fill="#f5a801" />
+                  <marker id="arrow-slate" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                    <path d="M0,0 L6,3 L0,6 Z" fill="#cbd5e1" />
                   </marker>
                   <marker id="arrow-red" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
                     <path d="M0,0 L6,3 L0,6 Z" fill="#ef4444" />
                   </marker>
                 </defs>
 
-                <g stroke="rgba(255,255,255,0.6)" strokeWidth="0.7" fill="none">
+                <g stroke="rgba(255,255,255,0.65)" strokeWidth="0.7" fill="none">
                   <rect x="4" y="4" width="152" height="92" rx="1" />
                   {pitchType === 'grid' ? (
                     <>
@@ -851,17 +852,14 @@ export default function CaorStudioPage() {
                       <line x1="80" y1="4" x2="80" y2="96" />
                       <circle cx="80" cy="50" r="13" />
                       <circle cx="80" cy="50" r="1" fill="white" />
-                      {/* Área izquierda */}
                       <rect x="4" y="22" width="24" height="56" />
                       <rect x="4" y="36" width="9" height="28" />
-                      {/* Área derecha */}
                       <rect x="132" y="22" width="24" height="56" />
                       <rect x="147" y="36" width="9" height="28" />
                     </>
                   )}
                 </g>
 
-                {/* Trayectorias punteadas (fantasma de movimiento hacia el siguiente paso) */}
                 {showTrails &&
                   keyframes.length > 1 &&
                   elements.map((el) => {
@@ -886,7 +884,6 @@ export default function CaorStudioPage() {
                     );
                   })}
 
-                {/* Flechas dibujadas en el fotograma activo */}
                 {(activeFrame?.arrows ?? []).map((ar) => (
                   <line
                     key={ar.id}
@@ -901,35 +898,36 @@ export default function CaorStudioPage() {
                       ar.kind === 'shoot'
                         ? 'url(#arrow-red)'
                         : ar.kind === 'run'
-                          ? 'url(#arrow-gold)'
+                          ? 'url(#arrow-slate)'
                           : 'url(#arrow-white)'
                     }
                   />
                 ))}
               </svg>
 
-              {/* Marca de agua Cañeros CAOR */}
               <img
                 src="/logo.svg"
                 alt=""
-                className="pointer-events-none absolute top-1/2 left-1/2 h-24 w-24 -translate-x-1/2 -translate-y-1/2 opacity-12"
+                className="pointer-events-none absolute top-1/2 left-1/2 h-20 w-20 -translate-x-1/2 -translate-y-1/2 opacity-10"
               />
 
-              {/* Indicador superior en cancha */}
-              <div className="pointer-events-none absolute top-2 left-3 flex items-center gap-2">
-                <span className="rounded-md bg-black/50 px-2 py-0.5 text-[11px] font-bold text-white backdrop-blur-xs">
+              <div className="pointer-events-none absolute top-3 left-3 flex items-center gap-2">
+                <span className="rounded-md bg-black/55 px-2.5 py-1 text-xs font-semibold text-white">
                   {activeFrame?.name ?? 'Paso 1'} ({activeFrameIdx + 1}/{keyframes.length})
                 </span>
                 {isLiveRecording && (
-                  <span className="inline-flex animate-pulse items-center gap-1 rounded-md bg-red-600 px-2 py-0.5 text-[11px] font-bold text-white">
-                    ● GRABANDO MOVIMIENTOS EN VIVO
+                  <span className="inline-flex animate-pulse items-center gap-1.5 rounded-md bg-red-600 px-2.5 py-1 text-xs font-semibold text-white">
+                    Grabando movimientos en vivo
                   </span>
                 )}
               </div>
 
-              {/* Elementos renderizados sobre la cancha */}
               {elements.map((el) => {
-                const pos = currentPositions[el.id] ?? { x: el.x, y: el.y };
+                const rawPos = currentPositions[el.id] ?? { x: el.x, y: el.y };
+                const pos = {
+                  x: clamp(rawPos.x, 0.06, 0.94),
+                  y: clamp(rawPos.y, 0.08, 0.92),
+                };
                 const isSel = selectedId === el.id;
                 const linkedPlayer = el.playerId ? players?.find((p) => p.id === el.playerId) : undefined;
 
@@ -951,11 +949,11 @@ export default function CaorStudioPage() {
                         backgroundColor: `${el.color}26`,
                       }}
                       className={cn(
-                        'absolute -translate-x-1/2 -translate-y-1/2 cursor-grab rounded-xl border-2 border-dashed flex items-start justify-start p-1.5 active:cursor-grabbing',
-                        isSel && 'ring-2 ring-gold-400',
+                        'absolute -translate-x-1/2 -translate-y-1/2 flex cursor-grab items-start justify-start rounded-xl border-2 border-dashed p-1.5 active:cursor-grabbing',
+                        isSel && 'ring-2 ring-white',
                       )}
                     >
-                      <span className="rounded bg-black/55 px-1.5 py-0.5 text-[10px] font-bold text-white">
+                      <span className="rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-bold text-white">
                         {el.label}
                       </span>
                     </div>
@@ -978,37 +976,37 @@ export default function CaorStudioPage() {
                     {el.kind === 'ball' ? (
                       <div
                         className={cn(
-                          'flex h-7 w-7 items-center justify-center rounded-full bg-white text-sm shadow-lg ring-2 ring-black/30',
-                          isSel && 'ring-4 ring-gold-400',
+                          'flex h-7 w-7 items-center justify-center rounded-full bg-white shadow-md ring-2 ring-black/25',
+                          isSel && 'ring-4 ring-white',
                         )}
                       >
-                        ⚽
+                        <BallSvg />
                       </div>
                     ) : el.kind === 'cone' ? (
                       <div
                         className={cn(
-                          'flex h-6 w-6 items-center justify-center rounded-sm text-xs font-black text-white shadow',
-                          isSel && 'ring-2 ring-gold-400',
+                          'flex h-6 w-6 items-center justify-center rounded-md text-white shadow',
+                          isSel && 'ring-2 ring-white',
                         )}
                         style={{ backgroundColor: el.color }}
                       >
-                        ▲
+                        <Triangle className="h-3.5 w-3.5 fill-current" />
                       </div>
                     ) : el.kind === 'minigoal' || el.kind === 'hurdle' || el.kind === 'ladder' ? (
                       <div
                         className={cn(
-                          'rounded border-2 px-2 py-0.5 text-[10px] font-extrabold text-zinc-900 shadow',
-                          isSel && 'ring-2 ring-gold-400',
+                          'rounded border border-white/80 px-2 py-0.5 text-[10px] font-bold text-white shadow',
+                          isSel && 'ring-2 ring-white',
                         )}
-                        style={{ backgroundColor: el.color, borderColor: '#0f172a' }}
+                        style={{ backgroundColor: el.color }}
                       >
                         {el.label}
                       </div>
                     ) : (
                       <div
                         className={cn(
-                          'flex h-9 w-9 items-center justify-center rounded-full border-2 border-white text-xs font-black text-white shadow-md transition-transform',
-                          isSel && 'ring-4 ring-gold-400 scale-110',
+                          'flex h-8 w-8 items-center justify-center rounded-full border-2 border-white text-xs font-bold text-white shadow-md transition-transform sm:h-9 sm:w-9',
+                          isSel && 'scale-110 ring-4 ring-white/80',
                         )}
                         style={{ backgroundColor: el.color }}
                       >
@@ -1016,7 +1014,7 @@ export default function CaorStudioPage() {
                       </div>
                     )}
                     {(el.sublabel || linkedPlayer) && (
-                      <span className="mt-0.5 max-w-24 truncate rounded bg-black/70 px-1.5 py-0.2 text-[10px] font-semibold text-white">
+                      <span className="mt-0.5 max-w-20 truncate rounded bg-black/70 px-1.5 py-0.5 text-[10px] font-medium text-white">
                         {linkedPlayer ? linkedPlayer.firstName : el.sublabel}
                       </span>
                     )}
@@ -1025,10 +1023,10 @@ export default function CaorStudioPage() {
               })}
             </div>
 
-            {/* Controles de Grabación y Reproducción (Timeline CAOR) */}
-            <div className="border-t border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-800 dark:bg-zinc-900/70">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <div className="flex flex-wrap items-center gap-1.5">
+            {/* Barra de reproducción y pasos con buen espacio */}
+            <div className="mt-4 space-y-3 border-t border-zinc-100 pt-4 dark:border-zinc-800">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div className="flex flex-wrap items-center gap-2">
                   {!isPlaying ? (
                     <Button
                       size="sm"
@@ -1037,10 +1035,10 @@ export default function CaorStudioPage() {
                         setIsPlaying(true);
                       }}
                     >
-                      <Play className="h-4 w-4" /> ▶️ Reproducir jugada
+                      <Play className="h-4 w-4" /> Reproducir jugada
                     </Button>
                   ) : (
-                    <Button variant="gold" size="sm" onClick={() => setIsPlaying(false)}>
+                    <Button variant="secondary" size="sm" onClick={() => setIsPlaying(false)}>
                       <Pause className="h-4 w-4" /> Pausar
                     </Button>
                   )}
@@ -1055,11 +1053,9 @@ export default function CaorStudioPage() {
                   >
                     <Square className="h-3.5 w-3.5" /> Inicio
                   </Button>
-
                   <Button variant="secondary" size="sm" onClick={recordStep}>
-                    <Plus className="h-4 w-4" /> 🎥 Grabar paso ({keyframes.length})
+                    <Plus className="h-4 w-4" /> Grabar paso ({keyframes.length})
                   </Button>
-
                   <Button
                     variant={isLiveRecording ? 'danger' : 'secondary'}
                     size="sm"
@@ -1069,17 +1065,16 @@ export default function CaorStudioPage() {
                     }}
                   >
                     <Video className="h-4 w-4" />
-                    {isLiveRecording ? 'Detener grabación en vivo' : 'Grabar en vivo al arrastrar'}
+                    {isLiveRecording ? 'Detener grabación' : 'Grabar en vivo'}
                   </Button>
                 </div>
 
-                {/* Velocidad, bucle y estelas */}
                 <div className="flex items-center gap-2 text-xs">
                   <button
                     type="button"
                     onClick={() => setLoop((l) => !l)}
                     className={cn(
-                      'inline-flex items-center gap-1 rounded-lg border px-2 py-1 font-semibold',
+                      'inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 font-medium',
                       loop
                         ? 'border-brand-600 bg-brand-50 text-brand-700 dark:bg-brand-950/40 dark:text-brand-300'
                         : 'border-zinc-300 text-zinc-500 dark:border-zinc-700',
@@ -1091,7 +1086,7 @@ export default function CaorStudioPage() {
                     type="button"
                     onClick={() => setShowTrails((t) => !t)}
                     className={cn(
-                      'rounded-lg border px-2 py-1 font-semibold',
+                      'rounded-lg border px-2.5 py-1.5 font-medium',
                       showTrails
                         ? 'border-brand-600 bg-brand-50 text-brand-700 dark:bg-brand-950/40 dark:text-brand-300'
                         : 'border-zinc-300 text-zinc-500 dark:border-zinc-700',
@@ -1102,19 +1097,18 @@ export default function CaorStudioPage() {
                   <Select
                     value={String(speed)}
                     onChange={(e) => setSpeed(Number(e.target.value) as 0.5 | 1 | 1.5 | 2)}
-                    className="w-24 py-1 text-xs"
+                    className="w-28 py-1.5 text-xs"
                   >
                     <option value="0.5">0.5x Lento</option>
                     <option value="1">1x Normal</option>
                     <option value="1.5">1.5x Rápido</option>
-                    <option value="2">2x Turbo</option>
+                    <option value="2">2x Doble</option>
                   </Select>
                 </div>
               </div>
 
-              {/* Barra de progreso de animación */}
               {isPlaying && (
-                <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-700">
+                <div className="h-1.5 w-full overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-700">
                   <div
                     className="h-full bg-brand-600 transition-all duration-75"
                     style={{ width: `${Math.round(playProgress * 100)}%` }}
@@ -1122,30 +1116,30 @@ export default function CaorStudioPage() {
                 </div>
               )}
 
-              {/* Tira de fotogramas (Keyframes) */}
-              <div className="mt-3 flex items-center gap-2 overflow-x-auto pb-1">
+              {/* Línea de tiempo de pasos */}
+              <div className="flex items-center gap-2 overflow-x-auto pb-1">
                 {keyframes.map((kf, idx) => (
                   <div
                     key={kf.id}
                     className={cn(
-                      'flex shrink-0 items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs transition',
+                      'flex shrink-0 items-center gap-2 rounded-lg border px-3 py-1.5 text-xs transition',
                       idx === activeFrameIdx
-                        ? 'border-brand-600 bg-brand-600 text-white shadow-xs'
+                        ? 'border-brand-600 bg-brand-600 text-white'
                         : 'border-zinc-200 bg-white text-zinc-700 hover:border-brand-400 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200',
                     )}
                   >
                     <button type="button" onClick={() => selectKeyframe(idx)} className="font-semibold">
                       {idx + 1}. {kf.name}
                     </button>
-                    <span className="text-[10px] opacity-75">({(kf.durationMs / 1000).toFixed(1)}s)</span>
+                    <span className="text-[10px] opacity-75">{(kf.durationMs / 1000).toFixed(1)}s</span>
                     {keyframes.length > 1 && (
                       <button
                         type="button"
                         onClick={() => removeKeyframe(idx)}
-                        className="ml-1 rounded p-0.5 opacity-70 hover:bg-black/20 hover:opacity-100"
+                        className="rounded p-0.5 opacity-70 hover:bg-black/20 hover:opacity-100"
                         title="Eliminar paso"
                       >
-                        ×
+                        <X className="h-3 w-3" />
                       </button>
                     )}
                   </div>
@@ -1154,31 +1148,30 @@ export default function CaorStudioPage() {
             </div>
           </Card>
 
-          {/* Biblioteca rápida de jugadas guardadas */}
+          {/* Jugadas guardadas recientemente */}
           <Card>
             <CardHeader
-              title="Mis Jugadas y Ejercicios CAOR guardados"
-              subtitle="Haz clic en cualquiera para cargarlo, reproducirlo o editarlo"
+              title="Jugadas y ejercicios guardados"
+              subtitle="Selecciona cualquiera para cargarlo en la pizarra"
               action={
                 <Button variant="ghost" size="sm" onClick={() => navigate('/app/caor/biblioteca')}>
-                  <FolderOpen className="h-4 w-4" /> Ver Biblioteca completa ({plays?.length ?? 0})
+                  <FolderOpen className="h-4 w-4" /> Ver Biblioteca ({plays?.length ?? 0})
                 </Button>
               }
             />
-            <CardBody>
+            <CardBody className="p-5">
               {!plays || plays.length === 0 ? (
-                <p className="text-xs text-zinc-500">
-                  Aún no has guardado jugadas en tu biblioteca CAOR. Pulsa{' '}
-                  <strong>“Guardar en Biblioteca CAOR”</strong> arriba para almacenar esta jugada.
+                <p className="text-sm text-zinc-500">
+                  Aún no has guardado jugadas. Usa el botón superior <strong>Guardar en Mi Biblioteca</strong>.
                 </p>
               ) : (
-                <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-3">
+                <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
                   {plays.slice(0, 6).map((p) => (
                     <div
                       key={p.id}
                       onClick={() => loadPlayIntoStudio(p)}
                       className={cn(
-                        'cursor-pointer rounded-xl border p-3 transition hover:border-brand-500 hover:shadow-xs',
+                        'cursor-pointer rounded-xl border p-3.5 transition hover:border-brand-500',
                         currentPlayId === p.id
                           ? 'border-brand-600 bg-brand-50/50 dark:bg-brand-950/30'
                           : 'border-zinc-200 dark:border-zinc-800',
@@ -1186,9 +1179,9 @@ export default function CaorStudioPage() {
                     >
                       <div className="flex items-center justify-between gap-2">
                         <Badge tone="green">{p.kind}</Badge>
-                        <span className="text-[11px] text-zinc-400">{p.keyframes.length} pasos</span>
+                        <span className="text-xs text-zinc-400">{p.keyframes.length} pasos</span>
                       </div>
-                      <p className="mt-1.5 truncate text-sm font-bold">{p.title}</p>
+                      <p className="mt-2 truncate text-sm font-semibold">{p.title}</p>
                       <p className="truncate text-xs text-zinc-500">{p.folder}</p>
                     </div>
                   ))}
@@ -1198,247 +1191,277 @@ export default function CaorStudioPage() {
           </Card>
         </div>
 
-        {/* Columna derecha: Personalización 100% del elemento + Datos del Ejercicio */}
-        <div className="space-y-4">
-          {/* Inspector del elemento seleccionado */}
+        {/* Columna derecha organizada por pestañas para evitar saturación */}
+        <div className="min-w-0">
           <Card>
-            <CardHeader
-              title="Personalizar elemento"
-              subtitle={selectedElement ? `Editando: ${selectedElement.label}` : 'Haz clic en una ficha'}
-              action={
-                selectedElement && (
-                  <Button variant="secondary" size="sm" onClick={duplicateSelected}>
-                    <Copy className="h-3.5 w-3.5" /> Duplicar
-                  </Button>
-                )
-              }
-            />
-            <CardBody className="space-y-3">
-              {!selectedElement ? (
-                <p className="text-xs text-zinc-500">
-                  Selecciona cualquier jugador, cono, zona o balón en la cancha para personalizar su dorsal,
-                  color, tamaño o vincularlo a un jugador real.
-                </p>
-              ) : (
-                <>
-                  <div className="grid grid-cols-2 gap-2">
-                    <Field label="Dorsal / Etiqueta">
+            <div className="grid grid-cols-2 border-b border-zinc-200 p-1.5 dark:border-zinc-800">
+              <button
+                type="button"
+                onClick={() => setInspectorTab('element')}
+                className={cn(
+                  'flex items-center justify-center gap-2 rounded-lg py-2 text-xs font-semibold transition',
+                  inspectorTab === 'element'
+                    ? 'bg-brand-600 text-white'
+                    : 'text-zinc-600 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800',
+                )}
+              >
+                <Sliders className="h-3.5 w-3.5" /> Elemento y Paso
+              </button>
+              <button
+                type="button"
+                onClick={() => setInspectorTab('metadata')}
+                className={cn(
+                  'flex items-center justify-center gap-2 rounded-lg py-2 text-xs font-semibold transition',
+                  inspectorTab === 'metadata'
+                    ? 'bg-brand-600 text-white'
+                    : 'text-zinc-600 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800',
+                )}
+              >
+                <FileText className="h-3.5 w-3.5" /> Datos de la Jugada
+              </button>
+            </div>
+
+            {inspectorTab === 'element' ? (
+              <CardBody className="space-y-6 p-5">
+                {/* Edición del elemento */}
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                      Elemento seleccionado
+                    </h4>
+                    {selectedElement && (
+                      <Button variant="secondary" size="sm" onClick={duplicateSelected}>
+                        <Copy className="h-3.5 w-3.5" /> Duplicar
+                      </Button>
+                    )}
+                  </div>
+
+                  {!selectedElement ? (
+                    <p className="rounded-xl bg-zinc-50 p-4 text-xs text-zinc-500 dark:bg-zinc-800/50">
+                      Toca cualquier jugador o material dentro de la cancha para cambiar su número, color,
+                      tamaño o asignarle un jugador de tu plantilla.
+                    </p>
+                  ) : (
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-2 gap-3">
+                        <Field label="Dorsal / Etiqueta">
+                          <Input
+                            value={selectedElement.label}
+                            onChange={(e) =>
+                              setElements((prev) =>
+                                prev.map((el) =>
+                                  el.id === selectedElement.id ? { ...el, label: e.target.value } : el,
+                                ),
+                              )
+                            }
+                          />
+                        </Field>
+                        <Field label="Color">
+                          <input
+                            type="color"
+                            value={selectedElement.color}
+                            onChange={(e) =>
+                              setElements((prev) =>
+                                prev.map((el) =>
+                                  el.id === selectedElement.id ? { ...el, color: e.target.value } : el,
+                                ),
+                              )
+                            }
+                            className="h-9 w-full cursor-pointer rounded-lg border border-zinc-300 bg-white p-1 dark:border-zinc-700 dark:bg-zinc-900"
+                          />
+                        </Field>
+                      </div>
+
+                      <Field label="Nombre corto debajo de la ficha">
+                        <Input
+                          value={selectedElement.sublabel ?? ''}
+                          placeholder="Ej. Capitán, Pivote, Apoyo..."
+                          onChange={(e) =>
+                            setElements((prev) =>
+                              prev.map((el) =>
+                                el.id === selectedElement.id ? { ...el, sublabel: e.target.value } : el,
+                              ),
+                            )
+                          }
+                        />
+                      </Field>
+
+                      {(selectedElement.kind === 'player_own' || selectedElement.kind === 'goalkeeper') && (
+                        <Field label="Vincular con jugador real">
+                          <Select
+                            value={selectedElement.playerId ?? ''}
+                            onChange={(e) => {
+                              const p = players?.find((x) => x.id === e.target.value);
+                              setElements((prev) =>
+                                prev.map((el) =>
+                                  el.id === selectedElement.id
+                                    ? {
+                                        ...el,
+                                        playerId: e.target.value || undefined,
+                                        label:
+                                          p?.jerseyNumber != null ? String(p.jerseyNumber) : el.label,
+                                        sublabel: p ? p.firstName : el.sublabel,
+                                      }
+                                    : el,
+                                ),
+                              );
+                            }}
+                          >
+                            <option value="">Sin vincular</option>
+                            {(players ?? []).map((p) => (
+                              <option key={p.id} value={p.id}>
+                                {fullName(p)} {p.jerseyNumber != null ? `(#${p.jerseyNumber})` : ''}
+                              </option>
+                            ))}
+                          </Select>
+                        </Field>
+                      )}
+
+                      <Field label={`Tamaño de ficha (${Math.round((selectedElement.size ?? 1) * 100)}%)`}>
+                        <input
+                          type="range"
+                          min={0.8}
+                          max={1.4}
+                          step={0.05}
+                          value={selectedElement.size ?? 1}
+                          onChange={(e) =>
+                            setElements((prev) =>
+                              prev.map((el) =>
+                                el.id === selectedElement.id
+                                  ? { ...el, size: Number(e.target.value) }
+                                  : el,
+                              ),
+                            )
+                          }
+                          className="w-full accent-brand-600"
+                        />
+                      </Field>
+                    </div>
+                  )}
+                </div>
+
+                {/* Edición del paso actual */}
+                {activeFrame && (
+                  <div className="space-y-4 border-t border-zinc-100 pt-5 dark:border-zinc-800">
+                    <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                      Configuración del Paso #{activeFrameIdx + 1}
+                    </h4>
+                    <div className="grid grid-cols-2 gap-3">
+                      <Field label="Nombre del paso">
+                        <Input
+                          value={activeFrame.name}
+                          onChange={(e) =>
+                            setKeyframes((prev) =>
+                              prev.map((kf, i) =>
+                                i === activeFrameIdx ? { ...kf, name: e.target.value } : kf,
+                              ),
+                            )
+                          }
+                        />
+                      </Field>
+                      <Field label="Duración (ms)">
+                        <Input
+                          type="number"
+                          min={300}
+                          max={6000}
+                          step={100}
+                          value={activeFrame.durationMs}
+                          onChange={(e) =>
+                            setKeyframes((prev) =>
+                              prev.map((kf, i) =>
+                                i === activeFrameIdx
+                                  ? { ...kf, durationMs: Math.max(300, Number(e.target.value) || 1200) }
+                                  : kf,
+                              ),
+                            )
+                          }
+                        />
+                      </Field>
+                    </div>
+                    <Field label="Nota táctica de este paso">
                       <Input
-                        value={selectedElement.label}
+                        value={activeFrame.notes ?? ''}
+                        placeholder="Ej. Perfilarse antes de recibir..."
                         onChange={(e) =>
-                          setElements((prev) =>
-                            prev.map((el) =>
-                              el.id === selectedElement.id ? { ...el, label: e.target.value } : el,
+                          setKeyframes((prev) =>
+                            prev.map((kf, i) =>
+                              i === activeFrameIdx ? { ...kf, notes: e.target.value } : kf,
                             ),
                           )
                         }
-                      />
-                    </Field>
-                    <Field label="Color">
-                      <input
-                        type="color"
-                        value={selectedElement.color}
-                        onChange={(e) =>
-                          setElements((prev) =>
-                            prev.map((el) =>
-                              el.id === selectedElement.id ? { ...el, color: e.target.value } : el,
-                            ),
-                          )
-                        }
-                        className="h-9 w-full cursor-pointer rounded-lg border border-zinc-300 bg-white p-1 dark:border-zinc-700 dark:bg-zinc-900"
                       />
                     </Field>
                   </div>
-
-                  <Field label="Subtítulo / Rol en cancha">
-                    <Input
-                      value={selectedElement.sublabel ?? ''}
-                      placeholder="Ej. Capitán, Pivote, Comodín..."
-                      onChange={(e) =>
-                        setElements((prev) =>
-                          prev.map((el) =>
-                            el.id === selectedElement.id ? { ...el, sublabel: e.target.value } : el,
-                          ),
-                        )
-                      }
-                    />
+                )}
+              </CardBody>
+            ) : (
+              <CardBody className="space-y-4 p-5">
+                <Field label="Título de la jugada o ejercicio" required>
+                  <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+                </Field>
+                <div className="grid grid-cols-2 gap-3">
+                  <Field label="Clasificación">
+                    <Select value={kind} onChange={(e) => setKind(e.target.value as CaorPlay['kind'])}>
+                      <option value="jugada">Jugada táctica</option>
+                      <option value="ejercicio">Ejercicio de cancha</option>
+                      <option value="balon_parado">Balón parado</option>
+                      <option value="automatismo">Automatismo</option>
+                    </Select>
                   </Field>
-
-                  {(selectedElement.kind === 'player_own' || selectedElement.kind === 'goalkeeper') && (
-                    <Field label="Vincular con jugador del plantel">
-                      <Select
-                        value={selectedElement.playerId ?? ''}
-                        onChange={(e) => {
-                          const p = players?.find((x) => x.id === e.target.value);
-                          setElements((prev) =>
-                            prev.map((el) =>
-                              el.id === selectedElement.id
-                                ? {
-                                    ...el,
-                                    playerId: e.target.value || undefined,
-                                    label:
-                                      p?.jerseyNumber != null ? String(p.jerseyNumber) : el.label,
-                                    sublabel: p ? p.firstName : el.sublabel,
-                                  }
-                                : el,
-                            ),
-                          );
-                        }}
-                      >
-                        <option value="">Sin vincular (libre)</option>
-                        {(players ?? []).map((p) => (
-                          <option key={p.id} value={p.id}>
-                            {fullName(p)} {p.jerseyNumber != null ? `(#${p.jerseyNumber})` : ''}
-                          </option>
-                        ))}
-                      </Select>
-                    </Field>
-                  )}
-
-                  <Field label={`Tamaño (${Math.round((selectedElement.size ?? 1) * 100)}%)`}>
-                    <input
-                      type="range"
-                      min={0.75}
-                      max={1.5}
-                      step={0.05}
-                      value={selectedElement.size ?? 1}
-                      onChange={(e) =>
-                        setElements((prev) =>
-                          prev.map((el) =>
-                            el.id === selectedElement.id ? { ...el, size: Number(e.target.value) } : el,
-                          ),
-                        )
-                      }
-                      className="w-full accent-brand-600"
-                    />
-                  </Field>
-                </>
-              )}
-            </CardBody>
-          </Card>
-
-          {/* Inspector del paso activo */}
-          {activeFrame && (
-            <Card>
-              <CardHeader title="Configurar paso actual" subtitle={`Fotograma #${activeFrameIdx + 1}`} />
-              <CardBody className="space-y-2.5">
-                <div className="grid grid-cols-2 gap-2">
-                  <Field label="Nombre del paso">
+                  <Field label="Carpeta en Biblioteca">
                     <Input
-                      value={activeFrame.name}
-                      onChange={(e) =>
-                        setKeyframes((prev) =>
-                          prev.map((kf, i) => (i === activeFrameIdx ? { ...kf, name: e.target.value } : kf)),
-                        )
-                      }
-                    />
-                  </Field>
-                  <Field label="Duración transición (ms)">
-                    <Input
-                      type="number"
-                      min={300}
-                      max={6000}
-                      step={100}
-                      value={activeFrame.durationMs}
-                      onChange={(e) =>
-                        setKeyframes((prev) =>
-                          prev.map((kf, i) =>
-                            i === activeFrameIdx
-                              ? { ...kf, durationMs: Math.max(300, Number(e.target.value) || 1200) }
-                              : kf,
-                          ),
-                        )
-                      }
+                      value={folder}
+                      onChange={(e) => setFolder(e.target.value)}
+                      placeholder="Ej. Salida de balón"
                     />
                   </Field>
                 </div>
-                <Field label="Consigna táctica de este paso">
-                  <Input
-                    value={activeFrame.notes ?? ''}
-                    placeholder="Ej. El interior perfila antes de recibir..."
-                    onChange={(e) =>
-                      setKeyframes((prev) =>
-                        prev.map((kf, i) => (i === activeFrameIdx ? { ...kf, notes: e.target.value } : kf)),
-                      )
-                    }
-                  />
+                <div className="grid grid-cols-3 gap-3">
+                  <Field label="Categoría">
+                    <Select value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
+                      <option value="">Todas</option>
+                      {(categories ?? []).map((c) => (
+                        <option key={c.id} value={c.id}>
+                          {c.name}
+                        </option>
+                      ))}
+                    </Select>
+                  </Field>
+                  <Field label="Minutos">
+                    <Input
+                      type="number"
+                      min={5}
+                      max={120}
+                      value={durationMin}
+                      onChange={(e) => setDurationMin(Math.max(1, Number(e.target.value) || 15))}
+                    />
+                  </Field>
+                  <Field label="Intensidad">
+                    <Select
+                      value={intensity}
+                      onChange={(e) => setIntensity(e.target.value as NonNullable<CaorPlay['intensity']>)}
+                    >
+                      <option value="baja">Baja</option>
+                      <option value="media">Media</option>
+                      <option value="alta">Alta</option>
+                      <option value="maxima">Máxima</option>
+                    </Select>
+                  </Field>
+                </div>
+                <Field label="Objetivo táctico">
+                  <Input value={objective} onChange={(e) => setObjective(e.target.value)} />
                 </Field>
+                <Field label="Descripción y consignas">
+                  <Textarea rows={3} value={description} onChange={(e) => setDescription(e.target.value)} />
+                </Field>
+                <Field label="Etiquetas (separadas por coma)">
+                  <Input value={tagsText} onChange={(e) => setTagsText(e.target.value)} />
+                </Field>
+                <Button className="w-full" onClick={() => savePlay(false)}>
+                  <Save className="h-4 w-4" /> Guardar en Mi Biblioteca
+                </Button>
               </CardBody>
-            </Card>
-          )}
-
-          {/* Ficha de guardado del Ejercicio / Jugada */}
-          <Card>
-            <CardHeader
-              title="Ficha de la Jugada / Ejercicio"
-              subtitle="100% editable para tu biblioteca propia"
-            />
-            <CardBody className="space-y-3">
-              <Field label="Título" required>
-                <Input value={title} onChange={(e) => setTitle(e.target.value)} />
-              </Field>
-              <div className="grid grid-cols-2 gap-2">
-                <Field label="Tipo">
-                  <Select value={kind} onChange={(e) => setKind(e.target.value as CaorPlay['kind'])}>
-                    <option value="jugada">Jugada táctica</option>
-                    <option value="ejercicio">Ejercicio de cancha</option>
-                    <option value="balon_parado">Balón parado (ABP)</option>
-                    <option value="automatismo">Automatismo</option>
-                  </Select>
-                </Field>
-                <Field label="Carpeta / Colección">
-                  <Input
-                    value={folder}
-                    onChange={(e) => setFolder(e.target.value)}
-                    placeholder="Ej. Salida de balón"
-                  />
-                </Field>
-              </div>
-              <div className="grid grid-cols-3 gap-2">
-                <Field label="Categoría">
-                  <Select value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
-                    <option value="">Todas</option>
-                    {(categories ?? []).map((c) => (
-                      <option key={c.id} value={c.id}>
-                        {c.name}
-                      </option>
-                    ))}
-                  </Select>
-                </Field>
-                <Field label="Duración (min)">
-                  <Input
-                    type="number"
-                    min={5}
-                    max={120}
-                    value={durationMin}
-                    onChange={(e) => setDurationMin(Math.max(1, Number(e.target.value) || 15))}
-                  />
-                </Field>
-                <Field label="Intensidad">
-                  <Select
-                    value={intensity}
-                    onChange={(e) => setIntensity(e.target.value as NonNullable<CaorPlay['intensity']>)}
-                  >
-                    <option value="baja">Baja</option>
-                    <option value="media">Media</option>
-                    <option value="alta">Alta</option>
-                    <option value="maxima">Máxima</option>
-                  </Select>
-                </Field>
-              </div>
-              <Field label="Objetivo principal">
-                <Input value={objective} onChange={(e) => setObjective(e.target.value)} />
-              </Field>
-              <Field label="Descripción / Reglas de provocación">
-                <Textarea rows={2} value={description} onChange={(e) => setDescription(e.target.value)} />
-              </Field>
-              <Field label="Etiquetas (separadas por coma)">
-                <Input value={tagsText} onChange={(e) => setTagsText(e.target.value)} />
-              </Field>
-              <Button className="w-full" onClick={() => savePlay(false)}>
-                <Sparkles className="h-4 w-4" /> 💾 Guardar en Mi Biblioteca CAOR
-              </Button>
-            </CardBody>
+            )}
           </Card>
         </div>
       </div>

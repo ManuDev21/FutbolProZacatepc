@@ -11,13 +11,14 @@ function slots(defs: SlotDef[]): LineupSlot[] {
   return defs.map((d, i) => ({ ...d, key: `s${i}` }));
 }
 
-const GK: SlotDef = { x: 0.5, y: 0.06, label: 'POR' };
+const GK: SlotDef = { x: 0.5, y: 0.1, label: 'POR' };
 
-function line(labels: string[], y: number, spread = 0.8): SlotDef[] {
+function line(labels: string[], y: number, spread = 0.72): SlotDef[] {
   const n = labels.length;
   if (n === 1) return [{ x: 0.5, y, label: labels[0] }];
-  const start = 0.5 - spread / 2;
-  const step = spread / (n - 1);
+  const safeSpread = Math.min(spread, 0.76);
+  const start = 0.5 - safeSpread / 2;
+  const step = safeSpread / (n - 1);
   return labels.map((label, i) => ({ x: start + step * i, y, label }));
 }
 

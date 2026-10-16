@@ -285,7 +285,7 @@ describe('Sistema Digital CAOR services', () => {
       favorite: false,
       elements: [
         { id: 'e1', kind: 'player_own', label: '5', color: '#177541', x: 0.4, y: 0.5 },
-        { id: 'b1', kind: 'ball', label: '⚽', color: '#ffffff', x: 0.42, y: 0.5 },
+        { id: 'b1', kind: 'ball', label: 'B', color: '#ffffff', x: 0.42, y: 0.5 },
       ],
       keyframes: [
         {

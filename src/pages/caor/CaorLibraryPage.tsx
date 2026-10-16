@@ -116,14 +116,14 @@ export default function CaorLibraryPage() {
   };
 
   return (
-    <div>
+    <div className="space-y-6">
       <CaorSubnav />
 
       <PageHeader
-        title="Mi Biblioteca Propia CAOR"
+        title="Mi Biblioteca"
         subtitle="Colecciones personalizadas de tus jugadas animadas, ejercicios, automatismos y balón parado"
         actions={
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2.5">
             <Button variant="secondary" size="sm" onClick={exportLibraryJson}>
               <Download className="h-4 w-4" /> Exportar Biblioteca
             </Button>
@@ -138,13 +138,13 @@ export default function CaorLibraryPage() {
               onChange={(e) => importLibraryJson(e.target.files?.[0])}
             />
             <Button size="sm" onClick={() => navigate('/app/caor/estudio')}>
-              <Plus className="h-4 w-4" /> Crear en Estudio CAOR
+              <Plus className="h-4 w-4" /> Crear en Estudio Táctico
             </Button>
           </div>
         }
       />
 
-      <div className="grid gap-4 lg:grid-cols-[240px_1fr]">
+      <div className="grid gap-6 lg:grid-cols-[240px_minmax(0,1fr)]">
         {/* Panel lateral de Carpetas / Colecciones */}
         <Card className="h-fit p-3">
           <p className="px-2 pb-2 text-xs font-extrabold tracking-wider text-zinc-500 uppercase">
@@ -268,8 +268,8 @@ export default function CaorLibraryPage() {
                           className="absolute h-3.5 w-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white shadow"
                         />
                       ))}
-                      <div className="absolute right-2 bottom-2 rounded-md bg-black/65 px-2 py-0.5 text-[10px] font-bold text-white">
-                        ▶️ {p.keyframes.length} pasos · {p.elements.length} elem.
+                      <div className="absolute right-2 bottom-2 inline-flex items-center gap-1 rounded-md bg-black/65 px-2 py-0.5 text-[10px] font-semibold text-white">
+                        <Play className="h-3 w-3" /> {p.keyframes.length} pasos · {p.elements.length} elem.
                       </div>
                     </div>
 
