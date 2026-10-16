@@ -206,11 +206,11 @@ export default function CaorTestsPage() {
 
       {/* Tabla de resultados / Ranking */}
       <Card>
-        <div className="flex flex-wrap items-center gap-3 border-b border-zinc-100 p-4 dark:border-zinc-800">
+        <div className="flex flex-col gap-2.5 border-b border-zinc-100 p-4 sm:flex-row sm:flex-wrap sm:items-center dark:border-zinc-800">
           <Select
             value={filterTestName}
             onChange={(e) => setFilterTestName(e.target.value)}
-            className="min-w-60"
+            className="w-full sm:w-72"
           >
             <option value="">Todas las pruebas (orden cronológico)</option>
             {distinctTestNames.map((n) => (
@@ -222,7 +222,7 @@ export default function CaorTestsPage() {
           <Select
             value={filterCategory}
             onChange={(e) => setFilterCategory(e.target.value)}
-            className="w-44"
+            className="w-full sm:w-48"
           >
             <option value="">Todas las categorías</option>
             {(categories ?? []).map((c) => (

@@ -231,7 +231,7 @@ export function AppLayout() {
       </AnimatePresence>
 
       {/* Contenido */}
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div className="flex min-w-0 flex-1 flex-col overflow-x-hidden">
         <header className="flex items-center gap-2 border-b border-zinc-200 bg-white px-3 py-2.5 sm:gap-4 sm:px-5 dark:border-zinc-800 dark:bg-zinc-900">
           <button
             className="rounded-lg p-2 text-zinc-600 hover:bg-zinc-100 lg:hidden dark:text-zinc-300 dark:hover:bg-zinc-800"
@@ -262,8 +262,10 @@ export function AppLayout() {
           <GlobalSearch />
         </div>
 
-        <main className="flex-1 overflow-y-auto p-3 pb-24 sm:p-5 lg:pb-5">
-          <Outlet />
+        <main className="min-w-0 flex-1 overflow-x-hidden overflow-y-auto p-3 pb-24 sm:p-5 lg:pb-5">
+          <div className="mx-auto w-full max-w-full min-w-0">
+            <Outlet />
+          </div>
         </main>
 
         {/* Bottom nav móvil */}

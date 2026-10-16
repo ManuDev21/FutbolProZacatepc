@@ -210,7 +210,7 @@ export default function PlayerProfilePage() {
             ) : (
               <>
                 <Progress value={stats.attendance.porcentaje} />
-                <div className="mt-4 grid grid-cols-4 gap-2 text-center text-xs">
+                <div className="mt-4 grid grid-cols-2 gap-2 text-center text-xs sm:grid-cols-4">
                   <div className="rounded-lg bg-brand-50 p-2 dark:bg-brand-900/20">
                     <p className="text-lg font-bold text-brand-700 dark:text-brand-300">
                       {stats.attendance.presentes}

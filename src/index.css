@@ -57,12 +57,21 @@
   }
 }
 
-html {
+html,
+body,
+#root {
+  max-width: 100%;
+  overflow-x: hidden;
   -webkit-tap-highlight-color: transparent;
 }
 
 body {
   @apply bg-zinc-100 text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-100;
+}
+
+/* Evita que las columnas implícitas de CSS Grid empujen el ancho en móvil */
+.grid > * {
+  min-width: 0;
 }
 
 ::-webkit-scrollbar {

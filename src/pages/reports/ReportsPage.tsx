@@ -70,7 +70,7 @@ export default function ReportsPage() {
         subtitle="PDF generado 100% en el navegador — nada se envía a servidores"
       />
 
-      <div className="grid gap-4 lg:grid-cols-[380px_1fr]">
+      <div className="grid gap-4 lg:grid-cols-[360px_minmax(0,1fr)]">
         {/* Selector de jugador */}
         <Card>
           <CardHeader title="Seleccionar jugador" />

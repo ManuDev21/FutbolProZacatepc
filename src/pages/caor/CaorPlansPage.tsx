@@ -166,11 +166,11 @@ export default function CaorPlansPage() {
         title="Planificaciones"
         subtitle="Microciclos semanales, mesociclos y macrociclos con objetivos, minutos y esfuerzo percibido"
         actions={
-          <div className="flex flex-wrap items-center gap-2.5">
+          <div className="flex w-full flex-wrap items-center gap-2.5 sm:w-auto">
             <Select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="w-44"
+              className="min-w-0 flex-1 sm:w-44 sm:flex-none"
             >
               <option value="">Todas las categorías</option>
               {(categories ?? []).map((c) => (

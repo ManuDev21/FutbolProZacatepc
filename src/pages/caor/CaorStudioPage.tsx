@@ -767,11 +767,11 @@ export default function CaorStudioPage() {
               )}
             </div>
 
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="grid w-full grid-cols-1 gap-2 sm:flex sm:w-auto sm:flex-wrap sm:items-center">
               <Select
                 value={pitchType}
                 onChange={(e) => setPitchType(e.target.value as CaorPitchType)}
-                className="w-40 py-1.5 text-xs"
+                className="w-full py-1.5 text-xs sm:w-40"
               >
                 <option value="f11">Cancha Fútbol 11</option>
                 <option value="f7">Cancha Fútbol 7</option>
@@ -784,7 +784,7 @@ export default function CaorStudioPage() {
                   const val = e.target.value as 'salida_f11' | 'ataque_f7' | 'rondo' | 'vacio' | '';
                   if (val) loadPresetFormation(val);
                 }}
-                className="w-44 py-1.5 text-xs"
+                className="w-full py-1.5 text-xs sm:w-44"
               >
                 <option value="">Cargar plantilla base...</option>
                 <option value="salida_f11">Salida Fútbol 11</option>

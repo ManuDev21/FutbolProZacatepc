@@ -22,10 +22,10 @@ const variants: Record<Variant, string> = {
 };
 
 const sizes: Record<Size, string> = {
-  sm: 'h-8 px-3 text-xs gap-1.5',
-  md: 'h-10 px-4 text-sm gap-2',
-  lg: 'h-12 px-6 text-base gap-2',
-  icon: 'h-9 w-9 p-0',
+  sm: 'min-h-8 px-3 py-1.5 text-xs gap-1.5',
+  md: 'min-h-10 px-4 py-2 text-sm gap-2',
+  lg: 'min-h-12 px-6 py-2.5 text-base gap-2',
+  icon: 'h-9 w-9 shrink-0 p-0',
 };
 
 export const Button = forwardRef<HTMLButtonElement, Props>(function Button(
@@ -37,7 +37,7 @@ export const Button = forwardRef<HTMLButtonElement, Props>(function Button(
       ref={ref}
       disabled={disabled || loading}
       className={cn(
-        'inline-flex items-center justify-center rounded-lg font-medium transition-colors',
+        'inline-flex items-center justify-center rounded-lg font-medium whitespace-nowrap transition-colors [&_svg]:shrink-0',
         'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500',
         'disabled:cursor-not-allowed disabled:opacity-60',
         variants[variant],

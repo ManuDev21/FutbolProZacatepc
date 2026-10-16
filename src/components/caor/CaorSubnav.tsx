@@ -22,25 +22,27 @@ const ITEMS = [
 
 export function CaorSubnav() {
   return (
-    <div className="mb-6 flex items-center gap-1 overflow-x-auto rounded-xl border border-zinc-200 bg-white p-1.5 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
-      {ITEMS.map((item) => (
-        <NavLink
-          key={item.to}
-          to={item.to}
-          end={item.end}
-          className={({ isActive }) =>
-            cn(
-              'inline-flex shrink-0 items-center gap-2 rounded-lg px-3.5 py-2 text-xs font-semibold transition-colors',
-              isActive
-                ? 'bg-brand-600 text-white shadow-2xs'
-                : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-white',
-            )
-          }
-        >
-          <item.icon className="h-4 w-4" />
-          {item.label}
-        </NavLink>
-      ))}
-    </div>
+    <nav className="mb-5 rounded-xl border border-zinc-200 bg-white p-1.5 shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
+      <div className="grid grid-cols-2 gap-1 sm:flex sm:flex-wrap sm:items-center">
+        {ITEMS.map((item) => (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            end={item.end}
+            className={({ isActive }) =>
+              cn(
+                'inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold transition-colors',
+                isActive
+                  ? 'bg-brand-600 text-white shadow-2xs'
+                  : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-white',
+              )
+            }
+          >
+            <item.icon className="h-3.5 w-3.5 shrink-0" />
+            <span className="truncate">{item.label}</span>
+          </NavLink>
+        ))}
+      </div>
+    </nav>
   );
 }

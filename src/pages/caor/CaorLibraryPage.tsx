@@ -190,37 +190,39 @@ export default function CaorLibraryPage() {
 
         {/* Listado y tarjetas de jugadas / ejercicios */}
         <div>
-          <Card className="mb-4 flex flex-wrap items-center gap-2 p-3">
+          <Card className="mb-4 flex flex-col gap-2.5 p-3 sm:flex-row sm:flex-wrap sm:items-center">
             <SearchInput
               value={search}
               onChange={setSearch}
               placeholder="Buscar por nombre, carpeta, objetivo o etiqueta..."
-              className="min-w-52 flex-1"
+              className="w-full sm:min-w-52 sm:flex-1"
             />
-            <Select
-              value={selectedKind}
-              onChange={(e) => setSelectedKind(e.target.value)}
-              className="w-44"
-            >
-              <option value="">Todos los tipos</option>
-              {Object.entries(KIND_LABELS).map(([k, l]) => (
-                <option key={k} value={k}>
-                  {l}
-                </option>
-              ))}
-            </Select>
-            <button
-              type="button"
-              onClick={() => setOnlyFav((f) => !f)}
-              className={cn(
-                'inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-xs font-semibold',
-                onlyFav
-                  ? 'border-gold-500 bg-amber-50 text-amber-800 dark:bg-amber-950/30 dark:text-gold-400'
-                  : 'border-zinc-300 text-zinc-600 dark:border-zinc-700 dark:text-zinc-300',
-              )}
-            >
-              <Star className={cn('h-4 w-4', onlyFav && 'fill-gold-500 text-gold-500')} /> Favoritos
-            </button>
+            <div className="flex items-center gap-2">
+              <Select
+                value={selectedKind}
+                onChange={(e) => setSelectedKind(e.target.value)}
+                className="min-w-0 flex-1 sm:w-44 sm:flex-none"
+              >
+                <option value="">Todos los tipos</option>
+                {Object.entries(KIND_LABELS).map(([k, l]) => (
+                  <option key={k} value={k}>
+                    {l}
+                  </option>
+                ))}
+              </Select>
+              <button
+                type="button"
+                onClick={() => setOnlyFav((f) => !f)}
+                className={cn(
+                  'inline-flex shrink-0 items-center gap-1.5 rounded-lg border px-3 py-2 text-xs font-semibold',
+                  onlyFav
+                    ? 'border-gold-500 bg-amber-50 text-amber-800 dark:bg-amber-950/30 dark:text-gold-400'
+                    : 'border-zinc-300 text-zinc-600 dark:border-zinc-700 dark:text-zinc-300',
+                )}
+              >
+                <Star className={cn('h-4 w-4', onlyFav && 'fill-gold-500 text-gold-500')} /> Favoritos
+              </button>
+            </div>
           </Card>
 
           {filtered.length === 0 ? (

@@ -223,7 +223,7 @@ export default function PaymentsPage() {
         }
       />
 
-      <div className="mb-4 grid grid-cols-3 gap-3">
+      <div className="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
         <StatCard icon={HandCoins} label="Cobrado" value={formatCurrency(totals.cobrado)} tone="brand" />
         <StatCard icon={Clock} label="Por cobrar" value={formatCurrency(totals.pendiente)} tone="gold" />
         <StatCard icon={CreditCard} label="Vencido" value={formatCurrency(totals.vencido)} tone="red" />

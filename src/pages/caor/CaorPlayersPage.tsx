@@ -124,7 +124,7 @@ export default function CaorPlayersPage() {
                 ))}
               </Select>
             </div>
-            <div className="max-h-[65vh] divide-y divide-zinc-100 overflow-y-auto dark:divide-zinc-800">
+            <div className="max-h-56 divide-y divide-zinc-100 overflow-y-auto lg:max-h-[65vh] dark:divide-zinc-800">
               {filteredPlayers.map((p) => (
                 <button
                   key={p.id}
@@ -161,7 +161,7 @@ export default function CaorPlayersPage() {
                   title={fullName(activePlayer)}
                   subtitle={`${catName.get(activePlayer.categoryId ?? '') ?? 'Sin categoría'} · ${calcAge(activePlayer.birthDate)} años · Posición base: ${activePlayer.position ?? 'Por definir'}`}
                   action={
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
                       <StatusBadge status={activePlayer.status} />
                       <Button
                         variant="secondary"
@@ -176,9 +176,9 @@ export default function CaorPlayersPage() {
                     </div>
                   }
                 />
-                <CardBody className="space-y-4">
+                <CardBody className="space-y-5 p-4 sm:p-5">
                   {/* Datos antropométricos y perfil táctico */}
-                  <div className="grid gap-3 sm:grid-cols-4">
+                  <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
                     <Field label="Pie hábil / Perfil">
                       <Select
                         value={profile.preferredFoot}
@@ -231,21 +231,21 @@ export default function CaorPlayersPage() {
 
                   {/* Atributos 100% editables y personalizables */}
                   <div className="rounded-xl border border-zinc-200 p-4 dark:border-zinc-800">
-                    <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-                      <div>
+                    <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                      <div className="min-w-0">
                         <p className="text-sm font-bold">
-                          Atributos Personalizados CAOR (0 – 100)
+                          Atributos Personalizados (0 – 100)
                         </p>
                         <p className="text-xs text-zinc-500">
                           Agrega, renombra o ajusta cualquier métrica específica para este jugador
                         </p>
                       </div>
-                      <div className="flex items-center gap-1.5">
+                      <div className="flex w-full items-center gap-2 sm:w-auto">
                         <Input
                           value={newAttrLabel}
                           onChange={(e) => setNewAttrLabel(e.target.value)}
                           placeholder="Nuevo atributo (ej. Juego aéreo)..."
-                          className="w-52 py-1 text-xs"
+                          className="min-w-0 flex-1 py-1.5 text-xs sm:w-56"
                         />
                         <Button type="button" variant="secondary" size="sm" onClick={addCustomAttribute}>
                           <Plus className="h-3.5 w-3.5" /> Añadir
@@ -257,17 +257,35 @@ export default function CaorPlayersPage() {
                       {profile.customAttributes.map((attr, idx) => (
                         <div
                           key={idx}
-                          className="flex items-center gap-2 rounded-lg bg-zinc-50 p-2.5 dark:bg-zinc-800/50"
+                          className="space-y-2 rounded-xl bg-zinc-50 p-3 dark:bg-zinc-800/50"
                         >
-                          <Input
-                            value={attr.label}
-                            onChange={(e) => {
-                              const next = [...profile.customAttributes];
-                              next[idx] = { ...attr, label: e.target.value };
-                              setProfile({ ...profile, customAttributes: next });
-                            }}
-                            className="w-40 py-1 text-xs font-semibold"
-                          />
+                          <div className="flex items-center gap-2">
+                            <Input
+                              value={attr.label}
+                              onChange={(e) => {
+                                const next = [...profile.customAttributes];
+                                next[idx] = { ...attr, label: e.target.value };
+                                setProfile({ ...profile, customAttributes: next });
+                              }}
+                              className="min-w-0 flex-1 py-1 text-xs font-semibold"
+                            />
+                            <span className="shrink-0 rounded-md bg-brand-100 px-2 py-0.5 font-mono text-xs font-bold text-brand-800 dark:bg-brand-900/50 dark:text-brand-200">
+                              {attr.value}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setProfile({
+                                  ...profile,
+                                  customAttributes: profile.customAttributes.filter((_, i) => i !== idx),
+                                })
+                              }
+                              className="shrink-0 rounded p-1 text-zinc-400 hover:text-red-500"
+                              title="Eliminar atributo"
+                            >
+                              <Trash2 className="h-3.5 w-3.5" />
+                            </button>
+                          </div>
                           <input
                             type="range"
                             min={0}
@@ -278,23 +296,8 @@ export default function CaorPlayersPage() {
                               next[idx] = { ...attr, value: Number(e.target.value) };
                               setProfile({ ...profile, customAttributes: next });
                             }}
-                            className="flex-1 accent-brand-600"
+                            className="h-2 w-full cursor-pointer accent-brand-600"
                           />
-                          <span className="w-9 text-right font-mono text-xs font-black text-brand-700 dark:text-brand-300">
-                            {attr.value}
-                          </span>
-                          <button
-                            type="button"
-                            onClick={() =>
-                              setProfile({
-                                ...profile,
-                                customAttributes: profile.customAttributes.filter((_, i) => i !== idx),
-                              })
-                            }
-                            className="rounded p-1 text-zinc-400 hover:text-red-500"
-                          >
-                            <Trash2 className="h-3.5 w-3.5" />
-                          </button>
                         </div>
                       ))}
                     </div>
@@ -343,12 +346,12 @@ export default function CaorPlayersPage() {
 
                   {/* Tests recientes del jugador */}
                   <div className="border-t border-zinc-100 pt-3 dark:border-zinc-800">
-                    <div className="mb-2 flex items-center justify-between">
+                    <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
                       <span className="text-xs font-bold text-zinc-500 uppercase">
                         Tests Físicos/Técnicos recientes de {activePlayer.firstName}
                       </span>
                       <Button variant="ghost" size="sm" onClick={() => navigate('/app/caor/test')}>
-                        Ir a Módulo de Tests →
+                        Ir a Módulo de Tests
                       </Button>
                     </div>
                     {playerTests.length === 0 ? (

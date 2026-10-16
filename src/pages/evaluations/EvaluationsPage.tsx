@@ -176,14 +176,14 @@ export default function EvaluationsPage() {
         }
       />
       <Card>
-        <div className="flex flex-wrap gap-2 border-b border-zinc-100 p-3 dark:border-zinc-800">
+        <div className="flex flex-col gap-2 border-b border-zinc-100 p-3 sm:flex-row sm:flex-wrap dark:border-zinc-800">
           <Select
             value={filterPlayer}
             onChange={(e) => {
               setFilterPlayer(e.target.value);
               setPage(1);
             }}
-            className="min-w-48"
+            className="w-full sm:w-56"
           >
             <option value="">Todos los jugadores</option>
             {players?.map((p) => (
@@ -198,7 +198,7 @@ export default function EvaluationsPage() {
               setFilterCat(e.target.value);
               setPage(1);
             }}
-            className="w-40"
+            className="w-full sm:w-44"
           >
             <option value="">Todas las categorías</option>
             {categories?.map((c) => (

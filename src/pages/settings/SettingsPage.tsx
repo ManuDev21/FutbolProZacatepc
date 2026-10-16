@@ -61,9 +61,9 @@ export default function SettingsPage() {
         title="Configuración"
         subtitle="Preferencias de la escuela y administración de datos locales"
       />
-      <div className="grid gap-4 lg:grid-cols-[220px_1fr]">
+      <div className="grid gap-4 lg:grid-cols-[220px_minmax(0,1fr)]">
         <Card className="h-fit p-2">
-          <nav className="flex gap-1 overflow-x-auto lg:flex-col">
+          <nav className="grid grid-cols-2 gap-1 sm:flex sm:flex-wrap lg:flex-col">
             {TABS.map((t) => (
               <button
                 key={t.key}

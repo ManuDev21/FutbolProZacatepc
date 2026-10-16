@@ -192,7 +192,7 @@ export function Pagination({
   const pages = Math.max(1, Math.ceil(total / pageSize));
   if (pages <= 1) return null;
   return (
-    <div className="flex items-center justify-between px-4 py-3 text-sm text-zinc-500">
+    <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-3 text-xs text-zinc-500 sm:text-sm">
       <span>
         Página {page} de {pages} · {total} registros
       </span>
@@ -265,12 +265,12 @@ export function PageHeader({
   actions?: ReactNode;
 }) {
   return (
-    <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-      <div>
-        <h1 className="text-xl font-bold tracking-tight sm:text-2xl">{title}</h1>
-        {subtitle && <p className="text-sm text-zinc-500">{subtitle}</p>}
+    <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="min-w-0 flex-1">
+        <h1 className="text-lg font-bold tracking-tight sm:text-2xl">{title}</h1>
+        {subtitle && <p className="mt-0.5 text-xs text-zinc-500 sm:text-sm">{subtitle}</p>}
       </div>
-      {actions && <div className="flex flex-wrap gap-2">{actions}</div>}
+      {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}
     </div>
   );
 }
