@@ -27,6 +27,13 @@ const CalendarPage = lazy(() => import('@/pages/calendar/CalendarPage'));
 const NotificationsPage = lazy(() => import('@/pages/notifications/NotificationsPage'));
 const SettingsPage = lazy(() => import('@/pages/settings/SettingsPage'));
 const AuditPage = lazy(() => import('@/pages/audit/AuditPage'));
+const CaorHubPage = lazy(() => import('@/pages/caor/CaorHubPage'));
+const CaorStudioPage = lazy(() => import('@/pages/caor/CaorStudioPage'));
+const CaorPlansPage = lazy(() => import('@/pages/caor/CaorPlansPage'));
+const CaorRivalPage = lazy(() => import('@/pages/caor/CaorRivalPage'));
+const CaorTestsPage = lazy(() => import('@/pages/caor/CaorTestsPage'));
+const CaorPlayersPage = lazy(() => import('@/pages/caor/CaorPlayersPage'));
+const CaorLibraryPage = lazy(() => import('@/pages/caor/CaorLibraryPage'));
 
 function PageLoader() {
   return (
@@ -90,6 +97,67 @@ export const router = createBrowserRouter([
                 <DashboardPage />
               </S>
             ),
+          },
+          {
+            element: <RequireRole area="caor" />,
+            children: [
+              {
+                path: 'caor',
+                element: (
+                  <S>
+                    <CaorHubPage />
+                  </S>
+                ),
+              },
+              {
+                path: 'caor/estudio',
+                element: (
+                  <S>
+                    <CaorStudioPage />
+                  </S>
+                ),
+              },
+              {
+                path: 'caor/planificaciones',
+                element: (
+                  <S>
+                    <CaorPlansPage />
+                  </S>
+                ),
+              },
+              {
+                path: 'caor/rival',
+                element: (
+                  <S>
+                    <CaorRivalPage />
+                  </S>
+                ),
+              },
+              {
+                path: 'caor/test',
+                element: (
+                  <S>
+                    <CaorTestsPage />
+                  </S>
+                ),
+              },
+              {
+                path: 'caor/jugadores',
+                element: (
+                  <S>
+                    <CaorPlayersPage />
+                  </S>
+                ),
+              },
+              {
+                path: 'caor/biblioteca',
+                element: (
+                  <S>
+                    <CaorLibraryPage />
+                  </S>
+                ),
+              },
+            ],
           },
           {
             element: <RequireRole area="jugadores" />,

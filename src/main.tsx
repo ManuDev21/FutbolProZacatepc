@@ -6,7 +6,24 @@ import { applyTheme, useUiStore } from './stores/ui';
 import './index.css';
 
 // Service Worker PWA (autoUpdate: se actualiza solo al detectar nueva versión)
-registerSW({ immediate: true });
+const updateSW = registerSW({
+  immediate: true,
+  onNeedRefresh() {
+    updateSW(true);
+  },
+  onRegisteredSW(_swUrl, registration) {
+    if (!registration) return;
+    // Verifica actualizaciones al volver a la pestaña y cada 30 min
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        registration.update().catch(() => {});
+      }
+    });
+    window.setInterval(() => {
+      registration.update().catch(() => {});
+    }, 30 * 60 * 1000);
+  },
+});
 
 // Captura del evento de instalación para el botón "Instalar app"
 window.addEventListener('beforeinstallprompt', (e) => {

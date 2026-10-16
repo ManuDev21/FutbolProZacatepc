@@ -33,6 +33,7 @@ export default defineConfig({
           { src: '/maskable-icon-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
         ],
         shortcuts: [
+          { name: 'Sistema Digital CAOR', url: '/app/caor', icons: [{ src: '/pwa-192x192.png', sizes: '192x192' }] },
           { name: 'Jugadores', url: '/app/jugadores', icons: [{ src: '/pwa-192x192.png', sizes: '192x192' }] },
           { name: 'Asistencias', url: '/app/asistencias', icons: [{ src: '/pwa-192x192.png', sizes: '192x192' }] },
           { name: 'Pagos', url: '/app/pagos', icons: [{ src: '/pwa-192x192.png', sizes: '192x192' }] },

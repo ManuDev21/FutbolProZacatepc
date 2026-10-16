@@ -302,3 +302,176 @@ export const POSITIONS_F11 = [
   'Extremo izquierdo',
   'Delantero centro',
 ] as const;
+
+// ============================================================================
+// SISTEMA DIGITAL CAOR — Tipos interactivos 100% locales
+// ============================================================================
+
+export type CaorElementKind =
+  | 'player_own'
+  | 'player_rival'
+  | 'goalkeeper'
+  | 'coach'
+  | 'ball'
+  | 'cone'
+  | 'pole'
+  | 'hurdle'
+  | 'ladder'
+  | 'ring'
+  | 'mannequin'
+  | 'minigoal'
+  | 'zone';
+
+export type CaorPitchType = 'f11' | 'f7' | 'half' | 'grid';
+
+/** Elemento sobre el lienzo del Estudio CAOR (x, y normalizados 0..1). */
+export interface CaorCanvasElement {
+  id: string;
+  kind: CaorElementKind;
+  label: string; // dorsal, nombre corto o etiqueta
+  sublabel?: string;
+  color: string; // hex
+  x: number; // 0..1
+  y: number; // 0..1
+  size?: number; // escala opcional (0.8..1.6)
+  rotation?: number; // grados
+  width?: number; // para zonas (0..1)
+  height?: number; // para zonas (0..1)
+  playerId?: string; // vínculo opcional a jugador real
+}
+
+/** Flecha o línea táctica dibujada sobre la cancha. */
+export interface CaorDrawingArrow {
+  id: string;
+  kind: 'pass' | 'run' | 'dribble' | 'shoot';
+  fromX: number;
+  fromY: number;
+  toX: number;
+  toY: number;
+  color: string;
+}
+
+/** Fotograma (keyframe) de una jugada o ejercicio animado CAOR. */
+export interface CaorKeyframe {
+  id: string;
+  name: string; // "Inicio", "Paso 2 — Desmarque", etc.
+  durationMs: number; // duración de la transición hacia el siguiente frame
+  notes?: string;
+  positions: Record<string, { x: number; y: number }>; // elementId -> coords
+  arrows?: CaorDrawingArrow[];
+}
+
+/** Jugada / Ejercicio / Tarea interactiva guardada en el Sistema Digital CAOR. */
+export interface CaorPlay extends BaseEntity {
+  title: string;
+  kind: 'jugada' | 'ejercicio' | 'balon_parado' | 'automatismo';
+  folder: string; // colección/carpeta de biblioteca propia
+  categoryId?: string;
+  pitchType: CaorPitchType;
+  objective?: string;
+  description?: string;
+  durationMin?: number;
+  intensity?: 'baja' | 'media' | 'alta' | 'maxima';
+  tags: string[];
+  favorite: boolean;
+  elements: CaorCanvasElement[];
+  keyframes: CaorKeyframe[];
+}
+
+/** Día dentro de un microciclo de planificación CAOR. */
+export interface CaorPlanDay {
+  day: 'Lunes' | 'Martes' | 'Miércoles' | 'Jueves' | 'Viernes' | 'Sábado' | 'Domingo';
+  focus: string; // ej. "Activación + Posesión", "Descanso", "Partido J8"
+  durationMin: number;
+  rpe: number; // 1-10 carga percibida
+  playIds: string[]; // jugadas/ejercicios CAOR asignados
+  trainingId?: string;
+  notes?: string;
+}
+
+/** Planificación deportiva CAOR (Microciclo / Mesociclo / Temporada). */
+export interface CaorPlan extends BaseEntity {
+  title: string;
+  cycleType: 'microciclo' | 'mesociclo' | 'macrociclo';
+  weekLabel?: string; // ej. "Semana 14 · Competitiva"
+  categoryId?: string;
+  coachId?: string;
+  startDate: string;
+  endDate: string;
+  mainObjective: string;
+  tacticalFocus?: string;
+  physicalFocus?: string;
+  status: 'borrador' | 'activo' | 'completado';
+  days: CaorPlanDay[];
+  notes?: string;
+}
+
+/** Jugador clave identificado en el scouting del rival. */
+export interface CaorRivalKeyPlayer {
+  id: string;
+  jerseyNumber: number;
+  name: string;
+  position: string;
+  threatLevel: 1 | 2 | 3 | 4 | 5;
+  notes: string;
+}
+
+/** Posición de un jugador rival en la pizarra de scouting. */
+export interface CaorRivalSlot {
+  id: string;
+  number: number;
+  label: string;
+  x: number;
+  y: number;
+}
+
+/** Informe de Análisis del Rival (Scouting CAOR). */
+export interface CaorRivalReport extends BaseEntity {
+  rivalName: string;
+  matchDate?: string;
+  competition?: string;
+  categoryId?: string;
+  format: SportFormat;
+  formationOffense: string; // ej. "1-4-3-3"
+  formationDefense: string; // ej. "1-4-4-2"
+  playingStyle: string;
+  strengths: string[];
+  weaknesses: string[];
+  attackingPatterns?: string;
+  defensiveTransition?: string;
+  setPiecesInfo?: string;
+  gamePlan?: string;
+  keyPlayers: CaorRivalKeyPlayer[];
+  lineupSlots: CaorRivalSlot[];
+}
+
+export type CaorTestCategory = 'velocidad' | 'resistencia' | 'fuerza' | 'agilidad' | 'tecnica' | 'personalizado';
+
+/** Registro de un Test físico/técnico CAOR. */
+export interface CaorTestRecord extends BaseEntity {
+  playerId: string;
+  categoryId?: string;
+  testName: string; // ej. "Sprint 30m", "Yo-Yo IR1", "Salto CMJ"
+  testCategory: CaorTestCategory;
+  date: string;
+  value: number;
+  unit: string; // "seg", "cm", "nivel", "pts", "km/h"
+  betterDirection: 'higher' | 'lower'; // menor es mejor para segs, mayor para cm/pts
+  benchmark?: number; // marca objetivo de referencia
+  notes?: string;
+}
+
+/** Ficha técnica CAOR extendida por jugador (atributos editables personalizados). */
+export interface CaorPlayerProfile extends BaseEntity {
+  playerId: string;
+  preferredFoot: 'derecho' | 'izquierdo' | 'ambidiestro';
+  heightCm?: number;
+  weightKg?: number;
+  secondaryPositions: string[];
+  tacticalRole?: string; // ej. "Organizador adelantado", "Carrilero profundo"
+  strengths: string[];
+  improvementGoals: string[];
+  individualPlan?: string;
+  customAttributes: { label: string; value: number }[]; // 0-100 100% personalizable
+}
+

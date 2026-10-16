@@ -1,7 +1,7 @@
 {
   "name": "futbolprozacatepec",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "module",
   "description": "FútbolProZacatepec — PWA de administración integral para escuelas de fútbol. 100% frontend, offline-first con IndexedDB.",
   "scripts": {

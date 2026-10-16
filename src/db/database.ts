@@ -2,6 +2,11 @@ import Dexie, { type EntityTable } from 'dexie';
 import type {
   AuditLog,
   Attendance,
+  CaorPlan,
+  CaorPlayerProfile,
+  CaorPlay,
+  CaorRivalReport,
+  CaorTestRecord,
   Category,
   Coach,
   Evaluation,
@@ -45,6 +50,11 @@ export class FutbolProDB extends Dexie {
   events!: EntityTable<EventItem, 'id'>;
   audit_logs!: EntityTable<AuditLog, 'id'>;
   lineups!: EntityTable<Lineup, 'id'>;
+  caor_plays!: EntityTable<CaorPlay, 'id'>;
+  caor_plans!: EntityTable<CaorPlan, 'id'>;
+  caor_rivals!: EntityTable<CaorRivalReport, 'id'>;
+  caor_tests!: EntityTable<CaorTestRecord, 'id'>;
+  caor_profiles!: EntityTable<CaorPlayerProfile, 'id'>;
 
   constructor() {
     super('futbolprozacatepec_db');
@@ -75,6 +85,14 @@ export class FutbolProDB extends Dexie {
       notifications: 'id, key, read, kind, createdAt',
       reports: 'id, kind, playerId, createdAt',
       audit_logs: 'id, entity, action, createdAt',
+    });
+    // v3: Sistema Digital CAOR
+    this.version(3).stores({
+      caor_plays: 'id, kind, folder, categoryId, favorite, createdAt',
+      caor_plans: 'id, cycleType, categoryId, status, startDate, createdAt',
+      caor_rivals: 'id, rivalName, categoryId, matchDate, createdAt',
+      caor_tests: 'id, playerId, categoryId, testName, testCategory, date',
+      caor_profiles: 'id, playerId',
     });
   }
 }

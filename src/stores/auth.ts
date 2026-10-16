@@ -46,6 +46,7 @@ export function can(role: Role | undefined, area: string): boolean {
       'calendario',
       'pizarra',
       'notificaciones',
+      'caor',
     ].includes(area);
   }
   // padre / tutor: solo consulta

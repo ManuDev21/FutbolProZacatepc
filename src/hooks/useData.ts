@@ -107,6 +107,41 @@ export function useSchool() {
   return useLiveQuery(() => settingsService.getSchool(), []);
 }
 
+export function useCaorPlays() {
+  return useLiveQuery(
+    () => db.caor_plays.toArray().then((a) => a.sort((x, y) => y.updatedAt.localeCompare(x.updatedAt))),
+    [],
+  );
+}
+
+export function useCaorPlans() {
+  return useLiveQuery(
+    () => db.caor_plans.toArray().then((a) => a.sort((x, y) => y.startDate.localeCompare(x.startDate))),
+    [],
+  );
+}
+
+export function useCaorRivals() {
+  return useLiveQuery(
+    () => db.caor_rivals.toArray().then((a) => a.sort((x, y) => y.updatedAt.localeCompare(x.updatedAt))),
+    [],
+  );
+}
+
+export function useCaorTests(playerId?: string) {
+  return useLiveQuery(
+    () =>
+      (playerId ? db.caor_tests.where('playerId').equals(playerId).toArray() : db.caor_tests.toArray()).then(
+        (a) => a.sort((x, y) => y.date.localeCompare(x.date)),
+      ),
+    [playerId],
+  );
+}
+
+export function useCaorProfiles() {
+  return useLiveQuery(() => db.caor_profiles.toArray(), []);
+}
+
 export function usePlayerStats(playerId?: string): PlayerStats | undefined {
   return useLiveQuery(() => (playerId ? playersService.stats(playerId) : undefined), [playerId]);
 }

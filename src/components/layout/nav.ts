@@ -16,6 +16,12 @@ import {
   Shield,
   Goal,
   Trophy,
+  Sparkles,
+  Play,
+  CalendarRange,
+  Crosshair,
+  Timer,
+  BookMarked,
   type LucideIcon,
 } from 'lucide-react';
 import type { Role } from '@/types';
@@ -27,12 +33,73 @@ export interface NavItem {
   roles: Role[];
   /** Sección lógica para control de acceso `can()` */
   area: string;
-  group: 'principal' | 'deportivo' | 'administracion' | 'sistema';
+  group: 'principal' | 'caor' | 'deportivo' | 'administracion' | 'sistema';
+  badge?: string;
 }
 
 const ALL: Role[] = ['admin', 'coach', 'parent'];
 const ADMIN: Role[] = ['admin'];
 const ADMIN_COACH: Role[] = ['admin', 'coach'];
+
+export const CAOR_NAV_ITEMS: NavItem[] = [
+  {
+    to: '/app/caor',
+    label: 'Centro Digital CAOR',
+    icon: Sparkles,
+    roles: ADMIN_COACH,
+    area: 'caor',
+    group: 'caor',
+    badge: 'HUB',
+  },
+  {
+    to: '/app/caor/estudio',
+    label: 'Tácticas & Ejercicios (Animados)',
+    icon: Play,
+    roles: ADMIN_COACH,
+    area: 'caor',
+    group: 'caor',
+  },
+  {
+    to: '/app/caor/planificaciones',
+    label: 'Planificaciones',
+    icon: CalendarRange,
+    roles: ADMIN_COACH,
+    area: 'caor',
+    group: 'caor',
+  },
+  {
+    to: '/app/caor/rival',
+    label: 'Análisis del Rival',
+    icon: Crosshair,
+    roles: ADMIN_COACH,
+    area: 'caor',
+    group: 'caor',
+  },
+  {
+    to: '/app/caor/test',
+    label: 'Test Físicos y Técnicos',
+    icon: Timer,
+    roles: ADMIN_COACH,
+    area: 'caor',
+    group: 'caor',
+  },
+  {
+    to: '/app/caor/jugadores',
+    label: 'Jugadores CAOR',
+    icon: Users,
+    roles: ADMIN_COACH,
+    area: 'caor',
+    group: 'caor',
+  },
+  {
+    to: '/app/caor/biblioteca',
+    label: 'Mi Biblioteca Propia',
+    icon: BookMarked,
+    roles: ADMIN_COACH,
+    area: 'caor',
+    group: 'caor',
+  },
+];
 
 export const NAV_ITEMS: NavItem[] = [
   { to: '/app', label: 'Panel', icon: LayoutDashboard, roles: ALL, area: 'dashboard', group: 'principal' },
@@ -164,6 +231,7 @@ export const NAV_ITEMS: NavItem[] = [
 
 export const GROUP_LABELS: Record<NavItem['group'], string> = {
   principal: 'Principal',
+  caor: 'Sistema Digital CAOR',
   deportivo: 'Área deportiva',
   administracion: 'Administración',
   sistema: 'Sistema',

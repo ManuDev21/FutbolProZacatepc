@@ -25,6 +25,11 @@ const TABLES = [
   'events',
   'audit_logs',
   'lineups',
+  'caor_plays',
+  'caor_plans',
+  'caor_rivals',
+  'caor_tests',
+  'caor_profiles',
 ] as const;
 
 export interface BackupFile {

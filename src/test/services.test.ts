@@ -9,6 +9,14 @@ import { financeService } from '@/services/finance.service';
 import { exercisesService } from '@/services/exercises.service';
 import { authService } from '@/services/auth.service';
 import { settingsService } from '@/services/settings.service';
+import {
+  caorPlaysService,
+  caorPlansService,
+  caorRivalsService,
+  caorTestsService,
+  caorProfilesService,
+  createEmptyWeekDays,
+} from '@/services/caor.service';
 import { todayISO, toPeriod } from '@/lib/utils';
 import type { Payment } from '@/types';
 
@@ -265,3 +273,95 @@ describe('authService', () => {
     await authService.logout();
   });
 });
+
+describe('Sistema Digital CAOR services', () => {
+  it('crea, duplica y exporta jugadas CAOR a la biblioteca de ejercicios', async () => {
+    const play = await caorPlaysService.create({
+      title: 'Salida Lavolpiana 4-3-3',
+      kind: 'jugada',
+      folder: 'Salida de balón',
+      pitchType: 'f11',
+      tags: ['tactica', 'salida'],
+      favorite: false,
+      elements: [
+        { id: 'e1', kind: 'player_own', label: '5', color: '#177541', x: 0.4, y: 0.5 },
+        { id: 'b1', kind: 'ball', label: '⚽', color: '#ffffff', x: 0.42, y: 0.5 },
+      ],
+      keyframes: [
+        {
+          id: 'k1',
+          name: 'Inicio',
+          durationMs: 1200,
+          positions: { e1: { x: 0.4, y: 0.5 }, b1: { x: 0.42, y: 0.5 } },
+        },
+        {
+          id: 'k2',
+          name: 'Conducción',
+          durationMs: 1200,
+          positions: { e1: { x: 0.6, y: 0.5 }, b1: { x: 0.62, y: 0.5 } },
+        },
+      ],
+    });
+    expect(play.id).toBeTruthy();
+
+    const dup = await caorPlaysService.duplicate(play.id);
+    expect(dup?.title).toContain('(copia)');
+    expect(await caorPlaysService.count()).toBe(2);
+
+    await caorPlaysService.exportToExerciseLibrary(play);
+    const exCount = await db.exercises.count();
+    expect(exCount).toBe(1);
+  });
+
+  it('gestiona planificaciones, análisis del rival, tests y fichas CAOR', async () => {
+    const plan = await caorPlansService.create({
+      title: 'Microciclo 1',
+      cycleType: 'microciclo',
+      startDate: todayISO(),
+      endDate: todayISO(),
+      mainObjective: 'Posesión',
+      status: 'activo',
+      days: createEmptyWeekDays(),
+    });
+    expect(plan.days).toHaveLength(7);
+
+    const rival = await caorRivalsService.create({
+      rivalName: 'Club Morelos',
+      format: 11,
+      formationOffense: '1-4-3-3',
+      formationDefense: '1-4-4-2',
+      playingStyle: 'Directo',
+      strengths: ['Velocidad'],
+      weaknesses: ['Espalda'],
+      keyPlayers: [],
+      lineupSlots: [],
+    });
+    expect(rival.rivalName).toBe('Club Morelos');
+
+    const player = await playersService.create({
+      ...base,
+      firstName: 'Carlos',
+      lastName: 'Vega',
+      birthDate: '2010-05-05',
+      status: 'activo',
+      joinedAt: todayISO(),
+    });
+
+    await caorTestsService.create({
+      playerId: player.id,
+      testName: 'Sprint 30m',
+      testCategory: 'velocidad',
+      date: todayISO(),
+      value: 4.2,
+      unit: 'seg',
+      betterDirection: 'lower',
+      benchmark: 4.35,
+    });
+    const pTests = await caorTestsService.forPlayer(player.id);
+    expect(pTests).toHaveLength(1);
+
+    const profile = await caorProfilesService.getOrCreateForPlayer(player.id);
+    expect(profile.customAttributes.length).toBeGreaterThan(0);
+  });
+});
+
